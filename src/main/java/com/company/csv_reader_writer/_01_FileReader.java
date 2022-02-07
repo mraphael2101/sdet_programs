@@ -1,4 +1,4 @@
-package com.company.csv_reader;
+package com.company.csv_reader_writer;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -8,7 +8,7 @@ public class _01_FileReader {
     public static void main(String[] args) {
         try {
             FileInputStream fin = new FileInputStream(System.getProperty("user.dir")
-                    + "\\src\\com\\company\\csv_reader\\SampleData.csv");
+                    + "\\src\\main\\java\\com\\company\\csv_reader_writer\\SampleData.csv");
             BufferedInputStream bin = new BufferedInputStream(fin);
             int i = 0;
             while ((i = bin.read()) != -1)

@@ -1,4 +1,4 @@
-package com.company.csv_reader;
+package com.company.csv_reader_writer;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -12,7 +12,7 @@ public class _02_FileWriter {
     public static void main(String[] args) {
         try {
             Path path = Paths.get(System.getProperty("user.dir")
-                    + "\\src\\com\\company\\csv_reader\\MyOutput.csv");
+                    + "\\src\\main\\java\\com\\company\\csv_reader_writer\\MyOutput.csv");
             writeFile(path, "Hello World 1" + NEW_LINE);
         } catch (IOException e) {
             e.printStackTrace();

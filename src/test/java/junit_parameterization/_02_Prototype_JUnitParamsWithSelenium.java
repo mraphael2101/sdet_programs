@@ -26,8 +26,6 @@ import static org.junit.Assert.assertEquals;
 public class _02_Prototype_JUnitParamsWithSelenium {
     @Parameter(value=0) public String inputA;
     @Parameter(value=1) public String inputB;
-    //@Parameter(value=2) public String inputC;
-    //@Parameter(value=3) public String inputD;
     private WebDriver driver;
     private static final int FIELD_1_INDEX = 0;
     private static String[] tokens;
@@ -65,10 +63,9 @@ public class _02_Prototype_JUnitParamsWithSelenium {
                         // do something e.g. cleansing happens here
                         tokens[FIELD_1_INDEX].replaceAll("a\'","");
                     }
-                    // Assign the value of each excel field to an attribute to manipulate
-                    // String field1 = tokens[FIELD_1_INDEX];
-
                 }
+
+                // Assign the value of each excel field to an attribute to manipulate
                 for (String token: tokens) {
                     datasetAsList.add(token);
                 }

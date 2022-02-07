@@ -89,12 +89,12 @@ public class _02_Prototype_JUnitParamsWithSelenium {
         });
         */
 
-        int rowSize = 3;
-        int colSize = 4;
+        int rowSize = 3 - 1;
+        int colSize = 4 - 1;
         String arr[][] = new String[rowSize][colSize];
 
-        for (int i=0; i<rowSize-1; i++) {
-            for (int j=0; j<colSize-1; j++)
+        for (int i=0; i<rowSize; i++) {
+            for (int j=0; j<colSize; j++)
                 arr[i][j] = datasetAsList.get(a++);
         }
         return Arrays.asList(arr);

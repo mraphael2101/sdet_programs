@@ -23,16 +23,16 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class _01_Prototype_JUnitParamsWithSelenium {
+public class Prototype_JUnit4ParamsWithSelenium {
     @Parameter(value=0) public String inputA;
     @Parameter(value=1) public String inputB;
     @Parameter(value=2) public String inputC;
     @Parameter(value=3) public String inputD;
     private WebDriver driver;
-    private static final int FIELD_1_INDEX = 0;
     private static String[] tokens;
-    private static List<String> datasetAsList = new ArrayList<>();
-    private static int a = 0;
+    private static final List<String> datasetAsList = new ArrayList<>();
+    private static final int FIELD_1_INDEX = 0;
+    private static final int FIELD_2_INDEX = 1;
 
     @BeforeClass
     public static void beforeClass() {
@@ -66,6 +66,9 @@ public class _01_Prototype_JUnitParamsWithSelenium {
                     if(tokens[FIELD_1_INDEX].contains("a\'")) {
                         tokens[FIELD_1_INDEX].replaceAll("a\'","");
                     }
+                    if(tokens[FIELD_2_INDEX].contains("n\'")) {
+                        tokens[FIELD_2_INDEX].replaceAll("n\'","");
+                    }
                 }
                 datasetAsList.addAll(Arrays.asList(tokens));
             }
@@ -76,14 +79,14 @@ public class _01_Prototype_JUnitParamsWithSelenium {
 
         int rowSize = 3 - 1;
         int colSize = 5 - 1;
+        int k = 0;
         String arr[][] = new String[rowSize][colSize];
 
         for (int i=0; i<rowSize; i++) {
             for (int j=0; j<colSize; j++)
-                arr[i][j] = datasetAsList.get(a++);
+                arr[i][j] = datasetAsList.get(k++);
         }
         return Arrays.asList(arr);
-
     }
 
     @Test
@@ -103,6 +106,6 @@ public class _01_Prototype_JUnitParamsWithSelenium {
     }
 
     private void seleniumMethod3() {
-        driver.findElement(By.xpath(" //div[@class='FPdoLc lJ9FBc']//input[@name='btnK']")).click();
+        driver.findElement(By.xpath("//div[@class='FPdoLc lJ9FBc']//input[@name='btnK']")).click();
     }
 }

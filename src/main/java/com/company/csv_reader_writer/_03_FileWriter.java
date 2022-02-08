@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class _02_FileWriter {
+public class _03_FileWriter {
     private static final String NEW_LINE = System.lineSeparator();
 
     public static void main(String[] args) {

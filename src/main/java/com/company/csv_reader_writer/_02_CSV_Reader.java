@@ -1,10 +1,10 @@
-package junit_parameterization;
+package com.company.csv_reader_writer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class _01_CSV_Reader {
+public class _02_CSV_Reader {
     private static final int FIELD_1_INDEX = 0;
 
     public static void main(String[] args) {

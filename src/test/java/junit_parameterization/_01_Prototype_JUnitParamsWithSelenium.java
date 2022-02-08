@@ -23,10 +23,11 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class _02_Prototype_JUnitParamsWithSelenium {
+public class _01_Prototype_JUnitParamsWithSelenium {
     @Parameter(value=0) public String inputA;
-    @Parameter(value=1) public String inputB;     // Uncomment for 2 params
+    @Parameter(value=1) public String inputB;
     @Parameter(value=2) public String inputC;
+    @Parameter(value=3) public String inputD;
     private WebDriver driver;
     private static final int FIELD_1_INDEX = 0;
     private static String[] tokens;
@@ -50,10 +51,6 @@ public class _02_Prototype_JUnitParamsWithSelenium {
         driver.quit();
     }
 
-    /*
-    @Parameters(name = "{index}: firstTestScenario({0}")    // Configuration for 1 param
-    public static List<String> sampleData() {
-    */
     @Parameters(name = "{index}: firstTestScenario()")
     public static List<Object> sampleData() {
         BufferedReader fileReader = null;   // Ignores the first line header record
@@ -77,20 +74,8 @@ public class _02_Prototype_JUnitParamsWithSelenium {
             e.printStackTrace();
         }
 
-
-        //return datasetAsList;   // Configuration 1 param
-
-        /*
-        return Arrays.asList(new Object[][] {   // Configuration 2 params
-                { datasetAsList.get(0), datasetAsList.get(1)},
-                { datasetAsList.get(2), datasetAsList.get(3)},
-                { datasetAsList.get(4), datasetAsList.get(5)},
-                { datasetAsList.get(6), datasetAsList.get(7)}
-        });
-        */
-
         int rowSize = 3 - 1;
-        int colSize = 4 - 1;
+        int colSize = 5 - 1;
         String arr[][] = new String[rowSize][colSize];
 
         for (int i=0; i<rowSize; i++) {
@@ -114,9 +99,7 @@ public class _02_Prototype_JUnitParamsWithSelenium {
     }
 
     private void seleniumMethod2() {
-        //driver.findElement(By.tagName("input")).sendKeys(inputA);
-        //driver.findElement(By.tagName("input")).sendKeys(inputA + " " +  inputB);
-        driver.findElement(By.tagName("input")).sendKeys(inputA + " " +  inputB + " " + inputC);
+        driver.findElement(By.tagName("input")).sendKeys(inputA + " " +  inputB + " " + inputC+ " " + inputD);
     }
 
     private void seleniumMethod3() {

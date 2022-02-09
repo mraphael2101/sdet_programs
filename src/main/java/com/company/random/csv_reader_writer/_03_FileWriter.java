@@ -1,4 +1,4 @@
-package com.company.csv_reader_writer;
+package com.company.random.csv_reader_writer;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

@@ -1,4 +1,4 @@
-package com.company.supplier;
+package com.company.random.supplier;
 
 import java.util.ArrayList;
 import java.util.List;

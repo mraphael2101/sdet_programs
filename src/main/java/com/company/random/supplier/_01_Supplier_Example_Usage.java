@@ -1,4 +1,4 @@
-package com.company.supplier;
+package com.company.random.supplier;
 
 /* In Java 8, Supplier is a functional interface;
    It takes no arguments and returns a result. */

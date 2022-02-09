@@ -1,4 +1,4 @@
-package junit_parameterization;
+package junit4_parameterization;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
@@ -78,7 +78,7 @@ public class Prototype_JUnit4ParamsWithSelenium {
         }
 
         int rowSize = 3 - 1;
-        int colSize = 5 - 1;
+        int colSize = 4;
         int k = 0;
         String arr[][] = new String[rowSize][colSize];
 

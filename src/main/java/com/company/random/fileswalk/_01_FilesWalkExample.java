@@ -1,4 +1,4 @@
-package com.company.fileswalk;
+package com.company.random.fileswalk;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;

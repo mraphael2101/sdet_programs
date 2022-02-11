@@ -19,12 +19,13 @@ public class _01_Rewrite_FeatureFile_Utility {
     private int FIELD_4_INDEX = 3;
     private static final String NEW_LINE = System.lineSeparator();
     private static String userDir = System.getProperty("user.dir");
+    private static String inputFilePath = "\\src\\test\\resources\\", outputFilePath="\\src\\test\\resources\\features\\";
 
     public void readAndCleanseDataFile(String fileName, int lastRowIndex, int lastColIndex) {
         BufferedReader fileReader = null;
         String line = "";
         try {
-            fileReader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\test\\resources\\data_tables\\" + fileName));
+            fileReader = new BufferedReader(new FileReader(userDir + inputFilePath + fileName));
             fileReader.readLine();
             while ((line = fileReader.readLine()) != null) {
                 String[] tokens = line.split(",");
@@ -99,13 +100,12 @@ public class _01_Rewrite_FeatureFile_Utility {
                3) \n\n Write rows of data
         */
         try {
-            inputFileAsList = Files.readAllLines(new File(userDir + "\\src\\test\\resources\\data_tables\\"
-                    + inputFileName).toPath());
+            inputFileAsList = Files.readAllLines(new File(userDir + inputFilePath + inputFileName).toPath());
 
             //fileContentsAsList.forEach(System.out::println);
             //fileContentsAsList.stream().parallel().forEach(s -> System.out.println(s));
 
-            FileWriter fw = new FileWriter(userDir + "\\src\\test\\resources\\features\\rewrite_demo\\" + outputFileName);
+            FileWriter fw = new FileWriter(userDir + outputFilePath + outputFileName);
             BufferedWriter bw = new BufferedWriter(fw);
 
             for(String s : cleanseListWithPipe()) {

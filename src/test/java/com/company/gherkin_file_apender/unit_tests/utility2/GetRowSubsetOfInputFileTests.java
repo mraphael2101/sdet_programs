@@ -1,0 +1,36 @@
+package com.company.gherkin_file_apender.unit_tests.utility2;
+
+import org.junit.Test;
+import com.company.gherkin_file_apender.unit_tests.config.TestBase_Utility2;
+
+import static org.junit.Assert.assertEquals;
+
+public class GetRowSubsetOfInputFileTests extends TestBase_Utility2 {
+    @Test
+    public void retrieveSingleRowFromInputFileTest() {
+        //TODO make this work for a range
+        //simOnlyPlanUtility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
+        print(simOnlyPlanUtility.readFileIntoList("SampleData.csv"));      // Deprecated
+        print(simOnlyPlanUtility.getSpecificRow(4));
+        assertEquals("Row 4 Col 1, Row 4 Col 2, Row 4 Col 3, Row 4 Col 4", simOnlyPlanUtility.getSpecificRow(4));
+    }
+
+    @Test
+    public void retrieveRowRangeFromInputTest(){
+        //TODO make this work for a range
+        //simOnlyPlanUtility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
+        print(simOnlyPlanUtility.readFileIntoList("SampleData.csv"));      // Deprecated
+        print(simOnlyPlanUtility.getRowRange(1,2));
+        assertEquals("[Row 1 Col 1, Row 1 Col 2, Row 1 Col 3, Row 1 Col 4, Row 2 Col 1, Row 2 Col 2, Row 2 Col 3, Row 2 Col 4]",
+                simOnlyPlanUtility.getRowRange(1,2).toString());
+    }
+
+    @Test
+    public void mockitoKeyFeaturesExample() {
+        // mock the value returned when calling a specific method
+        //when(testInfo.getDisplayName()).thenReturn("SampleTestName");
+
+        // verify that the method is called once
+        //verify(testInfoGetMethodNameServiceDemoImpl, times(1)).setTestMethodName(testInfo);
+    }
+}

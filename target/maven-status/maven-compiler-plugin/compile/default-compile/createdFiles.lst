@@ -1,6 +1,10 @@
-com\company\fileswalk\_01_FilesWalkExample.class
-com\company\supplier\Supplier.class
-com\company\supplier\_02_Return_Supplier_Example.class
-com\company\csv_reader\_01_FileReader.class
-com\company\csv_reader\_02_FileWriter.class
-com\company\supplier\_01_Supplier_Example_Usage.class
+com/company/random/supplier/_01_Supplier_Example_Usage.class
+com/company/random/csv_reader_writer/_02_CSV_Reader.class
+com/company/random/gherkin_file_appender/_02_Rewrite_FeatureFile_Utility.class
+com/company/random/two_dim_array/_01_CopySubsetOfTwoDimArray.class
+com/company/random/csv_reader_writer/_01_FileReader.class
+com/company/random/supplier/_02_Return_Supplier_Example.class
+com/company/random/fileswalk/_01_FilesWalkExample.class
+com/company/random/csv_reader_writer/_03_FileWriter.class
+com/company/random/supplier/Supplier.class
+com/company/random/gherkin_file_appender/_01_Rewrite_FeatureFile_Utility.class

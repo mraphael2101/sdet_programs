@@ -1,6 +1,6 @@
 package com.company.gherkin_file_apender.unit_tests.config;
 
-import com.company.gherkin_file_appender._02_Rewrite_FeatureFile_Utility;
+import com.company.gherkin_file_appender._02_Utility_AppendDataToFeatureFile;
 import org.junit.Before;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public class TestBase_Utility2 {
 
     //@InjectMocks
-    protected _02_Rewrite_FeatureFile_Utility simOnlyPlanUtility;
+    protected _02_Utility_AppendDataToFeatureFile simOnlyPlanUtility;
 
     //@Mock
     //Type1 myType1 = new Type1();
@@ -21,7 +21,7 @@ public class TestBase_Utility2 {
     @Before
     public void beforeTest() {
         //MockitoAnnotations.openMocks(this);
-        simOnlyPlanUtility = new _02_Rewrite_FeatureFile_Utility();
+        simOnlyPlanUtility = new _02_Utility_AppendDataToFeatureFile();
     }
 
     protected void print(List<String> fileInputRowsList) {

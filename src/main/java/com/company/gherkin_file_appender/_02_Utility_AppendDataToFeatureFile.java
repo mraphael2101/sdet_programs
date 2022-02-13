@@ -1,30 +1,43 @@
 package com.company.gherkin_file_appender;
 
+import com.company.gherkin_file_appender.interfaces.FeatureFile_DataAppender;
+
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class _02_Rewrite_FeatureFile_Utility {
-    private final String userDir = System.getProperty("user.dir");
-    private final String inputFilePath = "/src/test/resources/input_data/";
-    private final String outputFilePath = "/src/test/resources/features/";
+public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender {
+    private final String USER_DIR = System.getProperty("user.dir");
+    private final String PARTIAL_INPUT_FILE_PATH = "/src/test/resources/input_data/";
+    private String fileName;
     private List<String> inputFileAsList;
     private List<String> inputFileSubsetAsList;
     private String[][] inputFileAsTwoDimArr;
 
-    public _02_Rewrite_FeatureFile_Utility() {
+    public _02_Utility_AppendDataToFeatureFile() {
         this.inputFileAsList = new ArrayList<>();
         this.inputFileSubsetAsList = new ArrayList<>();
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public List<String> getInputFileAsList() {
+        return this.inputFileAsList ;
     }
 
     public List<String> readAndCleanseInputDataFile(String fileName, int lastRowIndex, int lastColIndex) {
         BufferedReader fileReader = null;
         String line = "";
         try {
-            fileReader = new BufferedReader(new FileReader(userDir + inputFilePath + fileName));
+            fileReader = new BufferedReader(new FileReader(USER_DIR + PARTIAL_INPUT_FILE_PATH + fileName));
             fileReader.readLine();
             while ((line = fileReader.readLine()) != null) {
                 String[] tokens = line.split(",");
@@ -61,6 +74,7 @@ public class _02_Rewrite_FeatureFile_Utility {
         } catch (IndexOutOfBoundsException ex) {
             System.out.println("Mismatch between lastRowIndex and/or lastColIndex params, and the no of input file records and/or columns");
         }
+
         for(String[] row: inputFileAsTwoDimArr) {
             for (String s : row) {
                 inputFileSubsetAsList.add(s);
@@ -71,27 +85,11 @@ public class _02_Rewrite_FeatureFile_Utility {
 
     public List<String> readFileIntoList(String fileName) {
         try {
-            inputFileAsList = Files.readAllLines(new File(userDir + inputFilePath + fileName).toPath());
+            inputFileAsList = Files.readAllLines(new File(USER_DIR + PARTIAL_INPUT_FILE_PATH + fileName).toPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
         return inputFileAsList;
-    }
-
-    public boolean createRevisedOutputGherkinFile(String inputFileName, String outputFileName) {
-        try {
-            inputFileAsList = Files.readAllLines(new File(userDir + inputFilePath + inputFileName).toPath());
-            FileWriter fw = new FileWriter(userDir + outputFilePath + outputFileName);
-            BufferedWriter bw = new BufferedWriter(fw);
-            for (String s : inputFileAsList) {
-                bw.write(s + System.getProperty("line.separator"));
-            }
-            bw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return true;
     }
 
     public String getSpecificRow(int rowIndex) {
@@ -111,4 +109,67 @@ public class _02_Rewrite_FeatureFile_Utility {
         }
         return inputFileSubsetAsList;
     }
+
+    @Override
+    public List<String> readDataSourceFileIntoList(String fileName) {
+        try {
+            inputFileAsList = Files.readAllLines(new File(USER_DIR + PARTIAL_INPUT_FILE_PATH + fileName).toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return inputFileAsList;
+    }
+
+    @Override
+    public boolean copyFeatureFile(String fileName) {
+        InputStream inStream = null;
+        OutputStream outStream = null;
+        try {
+            String PARTIAL_OUTPUT_FILE_PATH = "/src/test/resources/features/";
+            File fromFile = new File(USER_DIR + PARTIAL_OUTPUT_FILE_PATH + fileName);
+            File toFile = new File(USER_DIR + PARTIAL_OUTPUT_FILE_PATH + "data_vol_" + fileName);
+            setFileName(USER_DIR + PARTIAL_OUTPUT_FILE_PATH + "data_vol_" + fileName);
+            inStream = new FileInputStream(fromFile);
+            outStream = new FileOutputStream(toFile);
+            byte[] buffer = new byte[1024];
+
+            int length;
+            while ((length = inStream.read(buffer)) > 0) {
+                outStream.write(buffer, 0, length);
+                outStream.flush();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        finally {
+            try {
+                if (inStream != null)
+                    inStream.close();
+                if (outStream != null)
+                    outStream.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean appendDataToNewFeatureFile() {
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(getFileName(), true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for(String str: getInputFileAsList()) {
+                bw.write("|" + str.replace(",","|") + "|" + System.lineSeparator());
+            }
+            bw.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

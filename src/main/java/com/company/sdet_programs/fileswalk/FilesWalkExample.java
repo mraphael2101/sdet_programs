@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class _01_FilesWalkExample {
+public class FilesWalkExample {
+    private static final String userDir = System.getProperty("user.dir");
+    private static final String inputFilePath = "/src/test/resources/features/";
 
     public static void main(String[] args) throws IOException {
-        Path path = Paths.get("C:\\workspace\\IntelliJ_Projects\\cinnamonplus\\acceptance-tests\\src\\test\\resources\\sample");
+        Path path = Paths.get(userDir + inputFilePath);
         List<Path> paths = listFiles(path);
         paths.forEach(x -> System.out.println(x));
     }

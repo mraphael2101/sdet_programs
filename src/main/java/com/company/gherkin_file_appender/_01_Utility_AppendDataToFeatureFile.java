@@ -1,6 +1,6 @@
 package com.company.gherkin_file_appender;
 
-import com.company.gherkin_file_appender.interfaces.FeatureFile_DataAppender;
+import com.company.gherkin_file_appender.interfaces._01_FeatureFile_DataAppender;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -8,28 +8,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class _01_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender {
+public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
     private final String PARTIAL_INPUT_FILE_PATH = "/src/test/resources/input_data/";
-    private String fileName;
-    private List<String> inputFileAsList = new ArrayList<>();
+    private final String LINE_SEPARATOR = System.lineSeparator();
+    private List<String> inputFileAsList;
     private List<String> inputFileSubsetAsList;
     private String[][] inputFileAsTwoDimArr, inputFileSubsetAsTwoDimArr;
+    private String fileName;
 
     public _01_Utility_AppendDataToFeatureFile() {
+        this.inputFileAsList = new ArrayList<>();
         this.inputFileSubsetAsList = new ArrayList<>();
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getFileName() {
-        return this.fileName;
-    }
-
-    public List<String> getInputFileAsList() {
-        return this.inputFileAsList ;
     }
 
     public List<String> readAndCleanseInputDataFile(String fileName, int lastRowIndex, int lastColIndex) {
@@ -80,41 +70,6 @@ public class _01_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
             }
         }
         return inputFileSubsetAsList;
-    }
-
-    public List<String> getColumnSubsetOfInputFile(int firstColIndex, int lastColIndex) {
-        inputFileSubsetAsTwoDimArr = Arrays.copyOfRange(inputFileAsTwoDimArr, firstColIndex, lastColIndex);
-        return inputFileSubsetAsList;
-    }
-
-    public List<String> getRowSubsetOfInputFile(long lastRowIndex, long... skip) {
-        if (skip != null && skip.length != 0) {
-            if (skip[0] == lastRowIndex) {
-                try {
-                    throw new Exception("You cannot skip a row if it has the same index as the last row");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                inputFileSubsetAsTwoDimArr = Arrays.stream(inputFileAsTwoDimArr)
-                        .skip(skip[0])
-                        .limit(lastRowIndex)
-                        .toArray(String[][]::new);
-            }
-        } else {
-            inputFileSubsetAsTwoDimArr = Arrays.stream(inputFileAsTwoDimArr)
-                    .limit(lastRowIndex)
-                    .toArray(String[][]::new);
-        }
-        for (int i = 0; i < inputFileSubsetAsTwoDimArr.length; i++) {
-            for (int j = 0; j < inputFileAsTwoDimArr[0].length; j++)
-                inputFileSubsetAsList.add(inputFileSubsetAsTwoDimArr[i][j]);
-        }
-        return inputFileSubsetAsList;
-    }
-
-    public String[][] selectRows(String[][] array, List<Integer> indices) {
-        return indices.stream().map(i -> array[i]).toArray(String[][]::new);
     }
 
     @Override
@@ -179,12 +134,51 @@ public class _01_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
         }
     }
 
-/*
-    int indices = {...};
-List<String[]> rowList = new ArrayList<>();
-for (int i : indices)
-{
-   rowList.add(myArray[i]);
-}
-*/
+    public List<String> getColumnSubsetOfInputFile(int firstColIndex, int lastColIndex) {
+        inputFileSubsetAsTwoDimArr = Arrays.copyOfRange(inputFileAsTwoDimArr, firstColIndex, lastColIndex);
+        return inputFileSubsetAsList;
+    }
+
+    public List<String> getRowSubsetOfInputFile(long lastRowIndex, long... skip) {
+        if (skip != null && skip.length != 0) {
+            if (skip[0] == lastRowIndex) {
+                try {
+                    throw new Exception("You cannot skip a row if it has the same index as the last row");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                inputFileSubsetAsTwoDimArr = Arrays.stream(inputFileAsTwoDimArr)
+                        .skip(skip[0])
+                        .limit(lastRowIndex)
+                        .toArray(String[][]::new);
+            }
+        } else {
+            inputFileSubsetAsTwoDimArr = Arrays.stream(inputFileAsTwoDimArr)
+                    .limit(lastRowIndex)
+                    .toArray(String[][]::new);
+        }
+        for (int i = 0; i < inputFileSubsetAsTwoDimArr.length; i++) {
+            for (int j = 0; j < inputFileAsTwoDimArr[0].length; j++)
+                inputFileSubsetAsList.add(inputFileSubsetAsTwoDimArr[i][j]);
+        }
+        return inputFileSubsetAsList;
+    }
+
+    public String[][] selectRows(String[][] array, List<Integer> indices) {
+        return indices.stream().map(i -> array[i]).toArray(String[][]::new);
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public List<String> getInputFileAsList() {
+        return this.inputFileAsList ;
+    }
+
 }

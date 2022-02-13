@@ -9,7 +9,7 @@ public class GetRowSubsetOfInputFileTests extends TestBase_Utility2 {
     @Test
     public void retrieveSingleRowFromInputFileTest() {
         print(simOnlyPlanUtility.getSpecificRow(4));
-        assertEquals("Row 4 Col 1, Row 4 Col 2, Row 4 Col 3, Row 4 Col 4", simOnlyPlanUtility.getSpecificRow(4));
+        assertEquals("Row 3 Col 1, Row 3 Col 2, Row 3 Col 3, Row 3 Col 4", simOnlyPlanUtility.getSpecificRow(4));
     }
 
     @Test

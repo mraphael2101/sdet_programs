@@ -1,6 +1,6 @@
 package com.company.gherkin_file_appender;
 
-import com.company.gherkin_file_appender.interfaces.FeatureFile_DataAppender2;
+import com.company.gherkin_file_appender.interfaces._02_FeatureFile_DataAppender;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -8,30 +8,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender2 {
+public class _02_Utility_AppendDataToFeatureFile implements _02_FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
     private final String PARTIAL_INPUT_FILE_PATH = "/src/test/resources/input_data/";
-    private final List<String> inputFileSubsetAsList;
     private final String LINE_SEPARATOR = System.lineSeparator();
-    private String fileName;
+    private final List<String> inputFileSubsetAsList;
     private List<String> inputFileAsList;
     private String[][] inputFileAsTwoDimArr;
+    private String fileName;
 
     public _02_Utility_AppendDataToFeatureFile() {
         this.inputFileAsList = new ArrayList<>();
         this.inputFileSubsetAsList = new ArrayList<>();
-    }
-
-    public String getFileName() {
-        return this.fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public List<String> getInputFileAsList() {
-        return this.inputFileAsList;
     }
 
     public List<String> readAndCleanseInputDataFile(String fileName, int lastRowIndex, int lastColIndex) {
@@ -79,34 +67,6 @@ public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
         for (String[] row : inputFileAsTwoDimArr) {
             for (String s : row) {
                 inputFileSubsetAsList.add(s);
-            }
-        }
-        return inputFileSubsetAsList;
-    }
-
-    public List<String> readFileIntoList(String fileName) {
-        try {
-            inputFileAsList = Files.readAllLines(new File(USER_DIR + PARTIAL_INPUT_FILE_PATH + fileName).toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return inputFileAsList;
-    }
-
-    public String getSpecificRow(int rowIndex) {
-        for (int i = 0; i < inputFileAsList.size(); i++) {
-            if (i == rowIndex - 1) {
-                return inputFileAsList.get(i);
-            }
-        }
-        return null;
-    }
-
-    public List<String> getRowRange(int rangeStart, int rangeEnd) {
-        inputFileSubsetAsList.clear();
-        for (int i = 0; i < inputFileAsList.size(); i++) {
-            if (i >= rangeStart && i <= rangeEnd) {
-                inputFileSubsetAsList.add(inputFileAsList.get(i));
             }
         }
         return inputFileSubsetAsList;
@@ -188,4 +148,34 @@ public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
         }
     }
 
+    public String getSpecificRow(int rowIndex) {
+        for (int i = 0; i < inputFileAsList.size(); i++) {
+            if (i == rowIndex - 1) {
+                return inputFileAsList.get(i);
+            }
+        }
+        return null;
+    }
+
+    public List<String> getRowRange(int rangeStart, int rangeEnd) {
+        inputFileSubsetAsList.clear();
+        for (int i = 0; i < inputFileAsList.size(); i++) {
+            if (i >= rangeStart && i <= rangeEnd) {
+                inputFileSubsetAsList.add(inputFileAsList.get(i));
+            }
+        }
+        return inputFileSubsetAsList;
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public List<String> getInputFileAsList() {
+        return this.inputFileAsList;
+    }
 }

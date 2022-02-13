@@ -26,7 +26,7 @@ public class TestBase_Utility2 {
     public void beforeTest() {
         //MockitoAnnotations.openMocks(this);
         simOnlyPlanUtility = new _02_Utility_AppendDataToFeatureFile();
-        rows = simOnlyPlanUtility.readFileIntoList(getFileName());
+        rows = simOnlyPlanUtility.readDataSourceFileIntoList(getFileName());
     }
 
     protected void print(List<String> fileInputRowsList) {

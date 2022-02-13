@@ -10,18 +10,23 @@ public class TestBase_Utility2 {
     //@InjectMocks
     protected _02_Utility_AppendDataToFeatureFile simOnlyPlanUtility;
 
+    protected List<String> rows;
+    private String fileName;
+
     //@Mock
     //Type1 myType1 = new Type1();
     //@Mock
     //Type2 myType2 = new Type2();
 
     public TestBase_Utility2() {
+        setFileName("SampleData.csv");
     }
 
     @Before
     public void beforeTest() {
         //MockitoAnnotations.openMocks(this);
         simOnlyPlanUtility = new _02_Utility_AppendDataToFeatureFile();
+        rows = simOnlyPlanUtility.readFileIntoList(getFileName());
     }
 
     protected void print(List<String> fileInputRowsList) {
@@ -32,4 +37,11 @@ public class TestBase_Utility2 {
         System.out.println(value);
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }

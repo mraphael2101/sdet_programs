@@ -6,7 +6,7 @@ import com.company.gherkin_file_apender.unit_tests.config.TestBase_Utility1;
 public class GetColumnSubsetOfInputFileTests extends TestBase_Utility1 {
     @Test
     public void retrieveSingleColumnFromInputFileTest() {
-        simOnlyPlanUtility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
+        simOnlyPlanUtility.readAndCleanseInputDataFile("SampleData.csv", 6, 2);
         print(simOnlyPlanUtility.getColumnSubsetOfInputFile(2, 2));
     }
 

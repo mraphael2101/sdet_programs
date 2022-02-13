@@ -11,7 +11,6 @@ import static org.junit.Assert.*;
 public class PilotTests extends TestBase_Utility2 {
     @Test
     public void readDataSourceTest() {
-        List<String> rows = simOnlyPlanUtility.readDataSourceFileIntoList("SampleData.csv");
         assertEquals("8 rows", 8, rows.size());
     }
 
@@ -22,14 +21,27 @@ public class PilotTests extends TestBase_Utility2 {
 
     @Test
     public void copyFeatureFileTest() {
-        simOnlyPlanUtility.readDataSourceFileIntoList("SampleData.csv");
         assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
     }
 
     @Test
-    public void happyPathScenario() throws FileNotFoundException {
-        simOnlyPlanUtility.readDataSourceFileIntoList("SampleData.csv");
+    public void appendAllSourceDataToFeatureFile() {
         assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
-        assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile());
+        assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("alldata"));
     }
+
+    @Test
+    public void appendRowRangeToFeatureFile() {
+        int[] range = { 0, 1 };
+        assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
+        assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("rowsrange", range));
+    }
+
+    @Test
+    public void appendSingleRowToFeatureFile() {
+        int[] index = { 3 };
+        assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
+        assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("row", index));
+    }
+
 }

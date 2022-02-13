@@ -1,6 +1,6 @@
 package com.company.gherkin_file_appender;
 
-import com.company.gherkin_file_appender.interfaces.FeatureFile_DataAppender;
+import com.company.gherkin_file_appender.interfaces.FeatureFile_DataAppender2;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender {
+public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender2 {
     private final String USER_DIR = System.getProperty("user.dir");
     private final String PARTIAL_INPUT_FILE_PATH = "/src/test/resources/input_data/";
+    private final List<String> inputFileSubsetAsList;
+    private final String LINE_SEPARATOR = System.lineSeparator();
     private String fileName;
     private List<String> inputFileAsList;
-    private List<String> inputFileSubsetAsList;
     private String[][] inputFileAsTwoDimArr;
 
     public _02_Utility_AppendDataToFeatureFile() {
@@ -21,16 +22,16 @@ public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
         this.inputFileSubsetAsList = new ArrayList<>();
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
     public String getFileName() {
         return this.fileName;
     }
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public List<String> getInputFileAsList() {
-        return this.inputFileAsList ;
+        return this.inputFileAsList;
     }
 
     public List<String> readAndCleanseInputDataFile(String fileName, int lastRowIndex, int lastColIndex) {
@@ -75,7 +76,7 @@ public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
             System.out.println("Mismatch between lastRowIndex and/or lastColIndex params, and the no of input file records and/or columns");
         }
 
-        for(String[] row: inputFileAsTwoDimArr) {
+        for (String[] row : inputFileAsTwoDimArr) {
             for (String s : row) {
                 inputFileSubsetAsList.add(s);
             }
@@ -94,7 +95,7 @@ public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
 
     public String getSpecificRow(int rowIndex) {
         for (int i = 0; i < inputFileAsList.size(); i++) {
-            if (i == rowIndex) {
+            if (i == rowIndex - 1) {
                 return inputFileAsList.get(i);
             }
         }
@@ -102,6 +103,7 @@ public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
     }
 
     public List<String> getRowRange(int rangeStart, int rangeEnd) {
+        inputFileSubsetAsList.clear();
         for (int i = 0; i < inputFileAsList.size(); i++) {
             if (i >= rangeStart && i <= rangeEnd) {
                 inputFileSubsetAsList.add(inputFileAsList.get(i));
@@ -141,8 +143,7 @@ public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
         } catch (IOException ex) {
             ex.printStackTrace();
             return false;
-        }
-        finally {
+        } finally {
             try {
                 if (inStream != null)
                     inStream.close();
@@ -156,13 +157,28 @@ public class _02_Utility_AppendDataToFeatureFile implements FeatureFile_DataAppe
     }
 
     @Override
-    public boolean appendDataToNewFeatureFile() {
+    public boolean appendDataToNewFeatureFile(String mode, int... range) {
         FileWriter fw = null;
         try {
             fw = new FileWriter(getFileName(), true);
             BufferedWriter bw = new BufferedWriter(fw);
-            for(String str: getInputFileAsList()) {
-                bw.write("|" + str.replace(",","|") + "|" + System.lineSeparator());
+            switch (mode.toLowerCase()) {
+                case "rowsrange":
+                    if (range.length == 2) {
+                        for (String str : getRowRange(range[0], range[1])) {
+                            bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
+                        }
+                    }
+                    break;
+                case "row":
+                    String rowset = getSpecificRow(range[0]);
+                    bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    break;
+                case "alldata":
+                    for (String str : getInputFileAsList()) {
+                        bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    }
+                    break;
             }
             bw.close();
             return true;

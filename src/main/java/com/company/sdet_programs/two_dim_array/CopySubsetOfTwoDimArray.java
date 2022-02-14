@@ -2,7 +2,7 @@ package com.company.sdet_programs.two_dim_array;
 
 import java.util.Arrays;
 
-public class _01_CopySubsetOfTwoDimArray {
+public class CopySubsetOfTwoDimArray {
     static int[][] fileDataAsTwoDimArr = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 } };
     static int[][] a = new int[fileDataAsTwoDimArr.length][];
 

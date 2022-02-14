@@ -16,7 +16,7 @@ public class ResultSelection {
     public boolean equals(Object obj) {
         if(this == obj)
             return true;
-        if(obj == null || ! (obj instanceof ResultSelection))
+        if(!(obj instanceof ResultSelection))
             return false;
         var p = (ResultSelection) obj;
         return rowIndex == p.rowIndex && Arrays.equals(row, p.row, Comparator.naturalOrder());

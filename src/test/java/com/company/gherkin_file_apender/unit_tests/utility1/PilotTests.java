@@ -28,7 +28,7 @@ public class PilotTests extends TestBase_Utility1 {
     }
 
     @Test
-    public void happyPathScenario() throws FileNotFoundException {
+    public void happyPathScenario() {
         simOnlyPlanUtility.readDataSourceFileIntoList("SampleData.csv");
         assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
         assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile());

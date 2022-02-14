@@ -10,7 +10,8 @@ import java.util.List;
 
 public class _02_Utility_AppendDataToFeatureFile implements _02_FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
-    private final String PARTIAL_INPUT_FILE_PATH = "/src/test/resources/input_data/";
+    private String PARTIAL_INPUT_FILE_PATH = "\\src\\test\\resources\\input_data\\";
+    private String PARTIAL_OUTPUT_FILE_PATH = "\\src\\test\\resources\\features\\";
     private final String LINE_SEPARATOR = System.lineSeparator();
     private final List<String> inputFileSubsetAsList;
     private List<String> inputFileAsList;
@@ -26,7 +27,7 @@ public class _02_Utility_AppendDataToFeatureFile implements _02_FeatureFile_Data
         BufferedReader fileReader = null;
         String line = "";
         try {
-            fileReader = new BufferedReader(new FileReader(USER_DIR + PARTIAL_INPUT_FILE_PATH + fileName));
+            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
             fileReader.readLine();
             while ((line = fileReader.readLine()) != null) {
                 String[] tokens = line.split(",");
@@ -75,7 +76,7 @@ public class _02_Utility_AppendDataToFeatureFile implements _02_FeatureFile_Data
     @Override
     public List<String> readDataSourceFileIntoList(String fileName) {
         try {
-            inputFileAsList = Files.readAllLines(new File(USER_DIR + PARTIAL_INPUT_FILE_PATH + fileName).toPath());
+            inputFileAsList = Files.readAllLines(new File(USER_DIR + getPartialInputFilePath() + fileName).toPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,10 +88,9 @@ public class _02_Utility_AppendDataToFeatureFile implements _02_FeatureFile_Data
         InputStream inStream = null;
         OutputStream outStream = null;
         try {
-            String PARTIAL_OUTPUT_FILE_PATH = "/src/test/resources/features/";
-            File fromFile = new File(USER_DIR + PARTIAL_OUTPUT_FILE_PATH + fileName);
-            File toFile = new File(USER_DIR + PARTIAL_OUTPUT_FILE_PATH + "data_vol_" + fileName);
-            setFileName(USER_DIR + PARTIAL_OUTPUT_FILE_PATH + "data_vol_" + fileName);
+            File fromFile = new File(USER_DIR + getPartialOutputFilePath()+ fileName);
+            File toFile = new File(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
+            setFileName(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
             inStream = new FileInputStream(fromFile);
             outStream = new FileOutputStream(toFile);
             byte[] buffer = new byte[1024];
@@ -177,5 +177,23 @@ public class _02_Utility_AppendDataToFeatureFile implements _02_FeatureFile_Data
 
     public List<String> getInputFileAsList() {
         return this.inputFileAsList;
+    }
+
+    public String getPartialInputFilePath() {
+        if(System.getProperty("os.name").contains("Windows")) {
+            return this.PARTIAL_INPUT_FILE_PATH;
+        }
+        else {
+            return this.PARTIAL_INPUT_FILE_PATH.replaceAll("\\\\", "/");
+        }
+    }
+
+    public String getPartialOutputFilePath() {
+        if(System.getProperty("os.name").contains("Windows")) {
+            return this.PARTIAL_OUTPUT_FILE_PATH;
+        }
+        else {
+            return this.PARTIAL_OUTPUT_FILE_PATH.replaceAll("\\\\", "/");
+        }
     }
 }

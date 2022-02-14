@@ -4,12 +4,10 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-import static java.lang.Double.parseDouble;
-import static java.lang.System.out;
 import static java.util.Arrays.copyOf;
 import static java.util.stream.Collectors.toList;
 
-public class Experiment {
+public class FilteringWithPredicates {
     public List<ResultSelection> filterA(String[][] array, Predicate<String> predicate, int column) {
         return IntStream.range(0, array.length)
                 .filter(i -> predicate.test(array[i][column]))

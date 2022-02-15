@@ -123,7 +123,7 @@ public class Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender
         try {
             fw = new FileWriter(getFileName(), true);
             BufferedWriter bw = new BufferedWriter(fw);
-            String firstRow = getInputFileAsList().get(0).replaceAll(",", "|");
+            String firstRow = "|" + getInputFileAsList().get(0).replaceAll(",", "|") + "|" + LINE_SEPARATOR;
 
             switch (mode.toLowerCase()) {
                 case "alldata":
@@ -134,7 +134,7 @@ public class Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender
                 case "rowsrange":
                     if (range.length == 2) {
                         if(!(range[0] == 0)) {
-                            bw.write("|" + firstRow + "|" + LINE_SEPARATOR);
+                            bw.write(firstRow);
                         }
                         for (String str : getRowRange(range[0], range[1])) {
                             bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
@@ -145,7 +145,7 @@ public class Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender
                     }
                     break;
                 case "row":
-                    bw.write("|" + firstRow + "|" + LINE_SEPARATOR);
+                    bw.write(firstRow);
                     String rowset = getSpecificRow(range[0]);
                     bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
                     break;

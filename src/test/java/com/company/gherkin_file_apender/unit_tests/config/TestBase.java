@@ -5,7 +5,7 @@ import org.junit.Before;
 
 import java.util.List;
 
-public class TestBase_Utility {
+public class TestBase {
 
     //@InjectMocks
     protected Utility_AppendDataToFeatureFile simOnlyPlanUtility;
@@ -18,7 +18,7 @@ public class TestBase_Utility {
     //@Mock
     //Type2 myType2 = new Type2();
 
-    public TestBase_Utility() {
+    public TestBase() {
         setFileName("SampleData.csv");
     }
 

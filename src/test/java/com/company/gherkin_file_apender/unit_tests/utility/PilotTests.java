@@ -1,11 +1,11 @@
 package com.company.gherkin_file_apender.unit_tests.utility;
 
 import org.junit.Test;
-import com.company.gherkin_file_apender.unit_tests.config.TestBase_Utility;
+import com.company.gherkin_file_apender.unit_tests.config.TestBase;
 
 import static org.junit.Assert.*;
 
-public class PilotTests extends TestBase_Utility {
+public class PilotTests extends TestBase {
     @Test
     public void readDataSourceTest() {
         assertEquals("8 rows", 8, rows.size());

@@ -192,15 +192,6 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return inputFileSubsetAsList;
     }
 
-    public List<String> getColumnSubsetFromInputFileArrayList(int firstColIndex, int lastColIndex) {
-        inputFileSubsetAsTwoDimArr = Arrays.copyOfRange(inputFileAsTwoDimArr, firstColIndex, lastColIndex);
-        return inputFileSubsetAsList;
-    }
-
-    public List<String> getColumnSubsetFromInputFile2DArray() {
-        return null;
-    }
-
     public List<ResultSelection> filterRowsByList(String[][] array, Predicate<String> predicate, int column) {
         return IntStream.range(0, array.length)
                 .filter(i -> predicate.test(array[i][column]))
@@ -216,6 +207,15 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
             }
         }
         return result;
+    }
+
+    public List<String> getColumnSubsetFromInputFileArrayList(int firstColIndex, int lastColIndex) {
+        inputFileSubsetAsTwoDimArr = Arrays.copyOfRange(inputFileAsTwoDimArr, firstColIndex, lastColIndex);
+        return inputFileSubsetAsList;
+    }
+
+    public List<String> getColumnSubsetFromInputFile2DArray() {
+        return null;
     }
 
     public String getFileName() {
@@ -249,4 +249,5 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
             return PARTIAL_OUTPUT_FILE_PATH.replaceAll("\\\\", "/");
         }
     }
+
 }

@@ -1,8 +1,7 @@
-package com.company.gherkin_file_apender.unit_tests.utility2;
+package com.company.gherkin_file_apender.unit_tests.utility;
 
 import com.company.gherkin_file_appender.config.ResultSelection;
-import com.company.gherkin_file_appender.config._01_Utility_AppendDataToFeatureFile;
-import com.company.gherkin_file_appender.config._02_Utility_AppendDataToFeatureFile;
+import com.company.gherkin_file_appender.config.Utility_AppendDataToFeatureFile;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +14,7 @@ import static java.lang.Double.parseDouble;
 import static java.lang.System.out;
 
 public class PredicateFilterTests {
-    _02_Utility_AppendDataToFeatureFile filtersWithPredsAndStreams;
+    Utility_AppendDataToFeatureFile filtersWithPredsAndStreams;
 
     String[][] array2d = {
             { "Concorde", "74990.90" },
@@ -25,7 +24,7 @@ public class PredicateFilterTests {
 
     @Before
     public void beforeTest() {
-        filtersWithPredsAndStreams = new _02_Utility_AppendDataToFeatureFile();
+        filtersWithPredsAndStreams = new Utility_AppendDataToFeatureFile();
     }
 
     @Test
@@ -38,14 +37,16 @@ public class PredicateFilterTests {
 
     @Test
     public void filterResultsUsingPredicate_DoubleLessThan() {
-        Predicate<String> predDoubleLessThan = s -> (parseDouble(s) < 100000);
+        double value = 100000;
+        Predicate<String> predDoubleLessThan = s -> (parseDouble(s) < value);
         List<ResultSelection> resultList = filtersWithPredsAndStreams.filterReturnsList(array2d, predDoubleLessThan, 1);
         resultList.forEach(out::println);
     }
 
     @Test
     public void filterResultsUsingPredicate_DoubleGreaterThan() {
-        Predicate<String> predDoubleGreaterThan = s -> (parseDouble(s) > 75000);
+        double value = 75000;
+        Predicate<String> predDoubleGreaterThan = s -> (parseDouble(s) > value);
         Map<Integer, String[]> resultMap = filtersWithPredsAndStreams.filterReturnsMap(array2d, predDoubleGreaterThan, 1);
         resultMap.forEach((k, v) -> out.format("%d: %s%n", k, Arrays.toString(v)));
     }

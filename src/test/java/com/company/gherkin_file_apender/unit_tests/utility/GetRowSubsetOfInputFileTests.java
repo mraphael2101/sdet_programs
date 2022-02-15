@@ -1,11 +1,11 @@
-package com.company.gherkin_file_apender.unit_tests.utility2;
+package com.company.gherkin_file_apender.unit_tests.utility;
 
 import org.junit.Test;
-import com.company.gherkin_file_apender.unit_tests.config.TestBase_Utility2;
+import com.company.gherkin_file_apender.unit_tests.config.TestBase_Utility;
 
 import static org.junit.Assert.assertEquals;
 
-public class GetRowSubsetOfInputFileTests extends TestBase_Utility2 {
+public class GetRowSubsetOfInputFileTests extends TestBase_Utility {
     @Test
     public void retrieveSingleRowFromInputFileTest() {
         print(simOnlyPlanUtility.getSpecificRow(4));

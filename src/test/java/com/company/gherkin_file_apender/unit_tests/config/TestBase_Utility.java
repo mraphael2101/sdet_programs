@@ -1,14 +1,14 @@
 package com.company.gherkin_file_apender.unit_tests.config;
 
-import com.company.gherkin_file_appender.config._02_Utility_AppendDataToFeatureFile;
+import com.company.gherkin_file_appender.config.Utility_AppendDataToFeatureFile;
 import org.junit.Before;
 
 import java.util.List;
 
-public class TestBase_Utility2 {
+public class TestBase_Utility {
 
     //@InjectMocks
-    protected _02_Utility_AppendDataToFeatureFile simOnlyPlanUtility;
+    protected Utility_AppendDataToFeatureFile simOnlyPlanUtility;
 
     protected List<String> rows;
     private String fileName;
@@ -18,14 +18,14 @@ public class TestBase_Utility2 {
     //@Mock
     //Type2 myType2 = new Type2();
 
-    public TestBase_Utility2() {
+    public TestBase_Utility() {
         setFileName("SampleData.csv");
     }
 
     @Before
     public void beforeTest() {
         //MockitoAnnotations.openMocks(this);
-        simOnlyPlanUtility = new _02_Utility_AppendDataToFeatureFile();
+        simOnlyPlanUtility = new Utility_AppendDataToFeatureFile();
         rows = simOnlyPlanUtility.readDataSourceFileIntoList(getFileName());
     }
 

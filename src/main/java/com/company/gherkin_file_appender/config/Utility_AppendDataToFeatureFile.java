@@ -1,6 +1,6 @@
 package com.company.gherkin_file_appender.config;
 
-import com.company.gherkin_file_appender.interfaces._01_FeatureFile_DataAppender;
+import com.company.gherkin_file_appender.interfaces.FeatureFile_DataAppender;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -11,17 +11,15 @@ import java.util.stream.IntStream;
 import static java.util.Arrays.copyOf;
 import static java.util.stream.Collectors.toList;
 
-public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_DataAppender {
+public class Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
     private final String LINE_SEPARATOR = System.lineSeparator();
-    private String PARTIAL_INPUT_FILE_PATH = "\\src\\test\\resources\\input_data\\";
-    private String PARTIAL_OUTPUT_FILE_PATH = "\\src\\test\\resources\\features\\";
+    private final List<String> inputFileSubsetAsList;
     private List<String> inputFileAsList;
-    private List<String> inputFileSubsetAsList;
     private String[][] inputFileAsTwoDimArr, inputFileSubsetAsTwoDimArr;
     private String fileName;
 
-    public _01_Utility_AppendDataToFeatureFile() {
+    public Utility_AppendDataToFeatureFile() {
         this.inputFileAsList = new ArrayList<>();
         this.inputFileSubsetAsList = new ArrayList<>();
     }
@@ -91,7 +89,7 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
         InputStream inStream = null;
         OutputStream outStream = null;
         try {
-            File fromFile = new File(USER_DIR + getPartialOutputFilePath() + fileName);
+            File fromFile = new File(USER_DIR + getPartialOutputFilePath()+ fileName);
             File toFile = new File(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
             setFileName(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
             inStream = new FileInputStream(fromFile);
@@ -120,13 +118,37 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
     }
 
     @Override
-    public boolean appendDataToNewFeatureFile() {
+    public boolean appendDataToNewFeatureFile(String mode, int... range) {
         FileWriter fw = null;
         try {
             fw = new FileWriter(getFileName(), true);
             BufferedWriter bw = new BufferedWriter(fw);
-            for (String str : getInputFileAsList()) {
-                bw.write("|" + str.replace(",", "|") + "|" + System.lineSeparator());
+            String firstRow = getInputFileAsList().get(0).replaceAll(",", "|");
+
+            switch (mode.toLowerCase()) {
+                case "alldata":
+                    for (String str : getInputFileAsList()) {
+                        bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    }
+                    break;
+                case "rowsrange":
+                    if (range.length == 2) {
+                        if(!(range[0] == 0)) {
+                            bw.write("|" + firstRow + "|" + LINE_SEPARATOR);
+                        }
+                        for (String str : getRowRange(range[0], range[1])) {
+                            bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
+                        }
+                    }
+                    else if(range.length > 2) {
+                        throw new RuntimeException("A range cannot have more than two values");
+                    }
+                    break;
+                case "row":
+                    bw.write("|" + firstRow + "|" + LINE_SEPARATOR);
+                    String rowset = getSpecificRow(range[0]);
+                    bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    break;
             }
             bw.close();
             return true;
@@ -134,6 +156,25 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
             e.printStackTrace();
             return false;
         }
+    }
+
+    public String getSpecificRow(int rowIndex) {
+        for (int i = 0; i < inputFileAsList.size(); i++) {
+            if (i == rowIndex - 1) {
+                return inputFileAsList.get(i);
+            }
+        }
+        return null;
+    }
+
+    public List<String> getRowRange(int rangeStart, int rangeEnd) {
+        inputFileSubsetAsList.clear();
+        for (int i = 0; i < inputFileAsList.size(); i++) {
+            if (i >= rangeStart && i <= rangeEnd) {
+                inputFileSubsetAsList.add(inputFileAsList.get(i));
+            }
+        }
+        return inputFileSubsetAsList;
     }
 
     public List<String> getColumnSubsetOfInputFile(int firstColIndex, int lastColIndex) {
@@ -185,19 +226,22 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
     }
 
     public String getPartialInputFilePath() {
-        if (System.getProperty("os.name").contains("Windows")) {
-            return this.PARTIAL_INPUT_FILE_PATH;
-        } else {
-            return this.PARTIAL_INPUT_FILE_PATH.replaceAll("\\\\", "/");
+        String PARTIAL_INPUT_FILE_PATH = "\\src\\test\\resources\\input_data\\";
+        if(System.getProperty("os.name").contains("Windows")) {
+            return PARTIAL_INPUT_FILE_PATH;
+        }
+        else {
+            return PARTIAL_INPUT_FILE_PATH.replaceAll("\\\\", "/");
         }
     }
 
     public String getPartialOutputFilePath() {
-        if (System.getProperty("os.name").contains("Windows")) {
-            return this.PARTIAL_OUTPUT_FILE_PATH;
-        } else {
-            return this.PARTIAL_OUTPUT_FILE_PATH.replaceAll("\\\\", "/");
+        String PARTIAL_OUTPUT_FILE_PATH = "\\src\\test\\resources\\features\\";
+        if(System.getProperty("os.name").contains("Windows")) {
+            return PARTIAL_OUTPUT_FILE_PATH;
+        }
+        else {
+            return PARTIAL_OUTPUT_FILE_PATH.replaceAll("\\\\", "/");
         }
     }
-
 }

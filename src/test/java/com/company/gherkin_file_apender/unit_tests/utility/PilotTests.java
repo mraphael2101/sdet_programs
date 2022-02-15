@@ -1,14 +1,11 @@
-package com.company.gherkin_file_apender.unit_tests.utility2;
+package com.company.gherkin_file_apender.unit_tests.utility;
 
 import org.junit.Test;
-import com.company.gherkin_file_apender.unit_tests.config.TestBase_Utility2;
-
-import java.io.FileNotFoundException;
-import java.util.List;
+import com.company.gherkin_file_apender.unit_tests.config.TestBase_Utility;
 
 import static org.junit.Assert.*;
 
-public class PilotTests extends TestBase_Utility2 {
+public class PilotTests extends TestBase_Utility {
     @Test
     public void readDataSourceTest() {
         assertEquals("8 rows", 8, rows.size());
@@ -24,6 +21,7 @@ public class PilotTests extends TestBase_Utility2 {
         assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
     }
 
+    // *** Happy Path Scenarios ***
     @Test
     public void appendAllSourceDataToFeatureFile() {
         assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
@@ -31,8 +29,15 @@ public class PilotTests extends TestBase_Utility2 {
     }
 
     @Test
-    public void appendRowRangeToFeatureFile() {
-        int[] range = { 0, 1 };
+    public void appendRowRangeToFeatureFile_StartFromIndexZero() {
+        int[] range = { 0, 3 };
+        assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
+        assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("rowsrange", range));
+    }
+
+    @Test
+    public void appendRowRangeToFeatureFile_StartFromIndexOne() {
+        int[] range = { 1, 4 };
         assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
         assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("rowsrange", range));
     }
@@ -43,5 +48,5 @@ public class PilotTests extends TestBase_Utility2 {
         assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
         assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("row", index));
     }
-
+    // *** Ends Here ***
 }

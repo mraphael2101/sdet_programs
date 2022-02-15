@@ -2,7 +2,7 @@ package com.company.gherkin_file_appender.interfaces;
 
 import java.util.List;
 
-public interface _02_FeatureFile_DataAppender {
+public interface FeatureFile_DataAppender {
 
     List<String> readDataSourceFileIntoList(String fileName);
 

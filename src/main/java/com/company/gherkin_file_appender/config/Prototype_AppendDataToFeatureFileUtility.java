@@ -11,15 +11,16 @@ import java.util.stream.IntStream;
 import static java.util.Arrays.copyOf;
 import static java.util.stream.Collectors.toList;
 
-public class Utility_AppendDataToFeatureFile implements FeatureFile_DataAppender {
+public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
     private final String LINE_SEPARATOR = System.lineSeparator();
     private final List<String> inputFileSubsetAsList;
     private List<String> inputFileAsList;
-    private String[][] inputFileAsTwoDimArr, inputFileSubsetAsTwoDimArr;
+    private String[][] inputFileSubsetAsTwoDimArr;
+    private String[][] inputFileAsTwoDimArr;
     private String fileName;
 
-    public Utility_AppendDataToFeatureFile() {
+    public Prototype_AppendDataToFeatureFileUtility() {
         this.inputFileAsList = new ArrayList<>();
         this.inputFileSubsetAsList = new ArrayList<>();
     }

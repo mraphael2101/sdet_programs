@@ -1,6 +1,6 @@
 package com.company.gherkin_file_apender.unit_tests.config;
 
-import com.company.gherkin_file_appender.config.Utility_AppendDataToFeatureFile;
+import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
 import org.junit.Before;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public class TestBase {
 
     //@InjectMocks
-    protected Utility_AppendDataToFeatureFile simOnlyPlanUtility;
+    protected Prototype_AppendDataToFeatureFileUtility simOnlyPlanUtility;
 
     protected List<String> rows;
     private String fileName;
@@ -25,7 +25,7 @@ public class TestBase {
     @Before
     public void beforeTest() {
         //MockitoAnnotations.openMocks(this);
-        simOnlyPlanUtility = new Utility_AppendDataToFeatureFile();
+        simOnlyPlanUtility = new Prototype_AppendDataToFeatureFileUtility();
         rows = simOnlyPlanUtility.readDataSourceFileIntoList(getFileName());
     }
 

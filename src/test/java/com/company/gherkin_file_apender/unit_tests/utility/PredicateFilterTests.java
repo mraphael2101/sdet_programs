@@ -1,7 +1,7 @@
 package com.company.gherkin_file_apender.unit_tests.utility;
 
 import com.company.gherkin_file_appender.config.ResultSelection;
-import com.company.gherkin_file_appender.config.Utility_AppendDataToFeatureFile;
+import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import static java.lang.Double.parseDouble;
 import static java.lang.System.out;
 
 public class PredicateFilterTests {
-    Utility_AppendDataToFeatureFile filtersWithPredsAndStreams;
+    Prototype_AppendDataToFeatureFileUtility filtersWithPredsAndStreams;
 
     String[][] array2d = {
             { "Concorde", "74990.90" },
@@ -24,7 +24,7 @@ public class PredicateFilterTests {
 
     @Before
     public void beforeTest() {
-        filtersWithPredsAndStreams = new Utility_AppendDataToFeatureFile();
+        filtersWithPredsAndStreams = new Prototype_AppendDataToFeatureFileUtility();
     }
 
     @Test

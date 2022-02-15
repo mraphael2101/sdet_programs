@@ -1,7 +1,7 @@
-package com.company.gherkin_file_apender.unit_tests.utility;
+package com.company.gherkin_file_appender.unit_tests.utility;
 
 import org.junit.Test;
-import com.company.gherkin_file_apender.unit_tests.config.TestBase;
+import com.company.gherkin_file_appender.unit_tests.config.TestBase;
 
 import static org.junit.Assert.*;
 

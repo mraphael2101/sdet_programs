@@ -1,4 +1,4 @@
-package com.company.gherkin_file_apender.unit_tests.config;
+package com.company.gherkin_file_appender.unit_tests.config;
 
 import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
 import org.junit.Before;

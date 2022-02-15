@@ -1,6 +1,6 @@
-package com.company.gherkin_file_apender.unit_tests.utility;
+package com.company.gherkin_file_appender.unit_tests.utility;
 
-import com.company.gherkin_file_apender.unit_tests.config.TestBase;
+import com.company.gherkin_file_appender.unit_tests.config.TestBase;
 import org.junit.Test;
 
 public class GetColumnSubsetOfInputFileTests extends TestBase {

@@ -1,4 +1,4 @@
-package com.company.gherkin_file_apender.unit_tests.utility;
+package com.company.gherkin_file_appender.unit_tests.utility;
 
 import com.company.gherkin_file_appender.config.ResultSelection;
 import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;

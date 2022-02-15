@@ -24,6 +24,5 @@ public class _01_Remove_Object_From_ArrayList_By_Overriding_Equals {
 
         for(File file : files)
             System.out.println(file);
-
     }
 }

@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _01_Remove_Object_From_ArrayList_By_Overriding_Equals {
+public class _01_RemoveObjectFromArrayListByOverriding_Equals {
 
     @Override
     public boolean equals(Object object) {

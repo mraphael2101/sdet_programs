@@ -1,12 +1,15 @@
-package com.company.gherkin_file_appender;
+package com.company.gherkin_file_appender.config;
 
 import com.company.gherkin_file_appender.interfaces._02_FeatureFile_DataAppender;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+
+import static java.util.Arrays.copyOf;
+import static java.util.stream.Collectors.toList;
 
 public class _02_Utility_AppendDataToFeatureFile implements _02_FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
@@ -131,10 +134,12 @@ public class _02_Utility_AppendDataToFeatureFile implements _02_FeatureFile_Data
                     }
                     break;
                 case "row":
+                    //TODO Add code to insert the header as first line
                     String rowset = getSpecificRow(range[0]);
                     bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
                     break;
                 case "alldata":
+                    //TODO Add code to insert the header as first line
                     for (String str : getInputFileAsList()) {
                         bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
                     }
@@ -165,6 +170,23 @@ public class _02_Utility_AppendDataToFeatureFile implements _02_FeatureFile_Data
             }
         }
         return inputFileSubsetAsList;
+    }
+
+    public List<ResultSelection> filterReturnsList(String[][] array, Predicate<String> predicate, int column) {
+        return IntStream.range(0, array.length)
+                .filter(i -> predicate.test(array[i][column]))
+                .mapToObj(i -> new ResultSelection(i, copyOf(array[i], array[i].length)))
+                .collect(toList());
+    }
+
+    public Map<Integer, String[]> filterReturnsMap(String[][] array, Predicate<String> predicate, int column) {
+        TreeMap<Integer, String[]> result = new TreeMap<>();
+        for (int i = 0; i < array.length; i++) {
+            if (predicate.test(array[i][column])) {
+                result.put(i, copyOf(array[i], array[i].length));
+            }
+        }
+        return result;
     }
 
     public String getFileName() {

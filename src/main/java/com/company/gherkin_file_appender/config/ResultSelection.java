@@ -1,4 +1,4 @@
-package com.company.sdet_programs.two_dim_array.predicatesAndStreams;
+package com.company.gherkin_file_appender.config;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -14,12 +14,15 @@ public class ResultSelection {
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj)
+        if(this == obj) {
             return true;
-        if(!(obj instanceof ResultSelection))
+        }
+        if(!(obj instanceof ResultSelection)) {
             return false;
-        var p = (ResultSelection) obj;
-        return rowIndex == p.rowIndex && Arrays.equals(row, p.row, Comparator.naturalOrder());
+        }
+
+        var objResultSelection = (ResultSelection) obj;
+        return rowIndex == objResultSelection.rowIndex && Arrays.equals(row, objResultSelection.row, Comparator.naturalOrder());
     }
 
     @Override

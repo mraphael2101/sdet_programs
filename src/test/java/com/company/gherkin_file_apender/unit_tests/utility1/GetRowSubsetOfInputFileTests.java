@@ -13,12 +13,6 @@ public class GetRowSubsetOfInputFileTests extends TestBase_Utility1 {
     @Test
     public void retrieveRowRangeFromInputFileTest() {
         simOnlyPlanUtility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
-        print(simOnlyPlanUtility.getRowSubsetOfInputFile(7));
-    }
-
-    @Test
-    public void retrieveRowRangeFromInputFileAndSkipSingleRowTest() {
-        simOnlyPlanUtility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
-        print(simOnlyPlanUtility.getRowSubsetOfInputFile(5, 3));
+        print(simOnlyPlanUtility.getRowSubsetOfInputFile(3));
     }
 }

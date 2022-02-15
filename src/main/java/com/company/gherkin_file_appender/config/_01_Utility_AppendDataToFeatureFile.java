@@ -1,18 +1,21 @@
-package com.company.gherkin_file_appender;
+package com.company.gherkin_file_appender.config;
 
 import com.company.gherkin_file_appender.interfaces._01_FeatureFile_DataAppender;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+
+import static java.util.Arrays.copyOf;
+import static java.util.stream.Collectors.toList;
 
 public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
+    private final String LINE_SEPARATOR = System.lineSeparator();
     private String PARTIAL_INPUT_FILE_PATH = "\\src\\test\\resources\\input_data\\";
     private String PARTIAL_OUTPUT_FILE_PATH = "\\src\\test\\resources\\features\\";
-    private final String LINE_SEPARATOR = System.lineSeparator();
     private List<String> inputFileAsList;
     private List<String> inputFileSubsetAsList;
     private String[][] inputFileAsTwoDimArr, inputFileSubsetAsTwoDimArr;
@@ -65,7 +68,7 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
             System.out.println("Mismatch between lastRowIndex and/or lastColIndex params, and the no of input file records and/or columns");
         }
 
-        for(String[] row: inputFileAsTwoDimArr) {
+        for (String[] row : inputFileAsTwoDimArr) {
             for (String s : row) {
                 inputFileSubsetAsList.add(s);
             }
@@ -88,7 +91,7 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
         InputStream inStream = null;
         OutputStream outStream = null;
         try {
-            File fromFile = new File(USER_DIR + getPartialOutputFilePath()+ fileName);
+            File fromFile = new File(USER_DIR + getPartialOutputFilePath() + fileName);
             File toFile = new File(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
             setFileName(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
             inStream = new FileInputStream(fromFile);
@@ -103,8 +106,7 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
         } catch (IOException ex) {
             ex.printStackTrace();
             return false;
-        }
-        finally {
+        } finally {
             try {
                 if (inStream != null)
                     inStream.close();
@@ -123,8 +125,8 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
         try {
             fw = new FileWriter(getFileName(), true);
             BufferedWriter bw = new BufferedWriter(fw);
-            for(String str: getInputFileAsList()) {
-                bw.write("|" + str.replace(",","|") + "|" + System.lineSeparator());
+            for (String str : getInputFileAsList()) {
+                bw.write("|" + str.replace(",", "|") + "|" + System.lineSeparator());
             }
             bw.close();
             return true;
@@ -139,34 +141,35 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
         return inputFileSubsetAsList;
     }
 
-    public List<String> getRowSubsetOfInputFile(long lastRowIndex, long... skip) {
-        if (skip != null && skip.length != 0) {
-            if (skip[0] == lastRowIndex) {
-                try {
-                    throw new Exception("You cannot skip a row if it has the same index as the last row");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                inputFileSubsetAsTwoDimArr = Arrays.stream(inputFileAsTwoDimArr)
-                        .skip(skip[0])
-                        .limit(lastRowIndex)
-                        .toArray(String[][]::new);
-            }
-        } else {
-            inputFileSubsetAsTwoDimArr = Arrays.stream(inputFileAsTwoDimArr)
-                    .limit(lastRowIndex)
-                    .toArray(String[][]::new);
-        }
+    public List<String> getRowSubsetOfInputFile(long lastRowIndex) {
+        inputFileSubsetAsTwoDimArr = Arrays.stream(inputFileAsTwoDimArr)
+                .limit(lastRowIndex)
+                .toArray(String[][]::new);
+
+        inputFileSubsetAsList.clear();
+
         for (int i = 0; i < inputFileSubsetAsTwoDimArr.length; i++) {
-            for (int j = 0; j < inputFileAsTwoDimArr[0].length; j++)
+            for (int j = 0; j < inputFileSubsetAsTwoDimArr[0].length; j++)
                 inputFileSubsetAsList.add(inputFileSubsetAsTwoDimArr[i][j]);
         }
         return inputFileSubsetAsList;
     }
 
-    public String[][] selectRows(String[][] array, List<Integer> indices) {
-        return indices.stream().map(i -> array[i]).toArray(String[][]::new);
+    public List<ResultSelection> filterReturnsList(String[][] array, Predicate<String> predicate, int column) {
+        return IntStream.range(0, array.length)
+                .filter(i -> predicate.test(array[i][column]))
+                .mapToObj(i -> new ResultSelection(i, copyOf(array[i], array[i].length)))
+                .collect(toList());
+    }
+
+    public Map<Integer, String[]> filterReturnsMap(String[][] array, Predicate<String> predicate, int column) {
+        TreeMap<Integer, String[]> result = new TreeMap<>();
+        for (int i = 0; i < array.length; i++) {
+            if (predicate.test(array[i][column])) {
+                result.put(i, copyOf(array[i], array[i].length));
+            }
+        }
+        return result;
     }
 
     public String getFileName() {
@@ -178,23 +181,21 @@ public class _01_Utility_AppendDataToFeatureFile implements _01_FeatureFile_Data
     }
 
     public List<String> getInputFileAsList() {
-        return this.inputFileAsList ;
+        return this.inputFileAsList;
     }
 
     public String getPartialInputFilePath() {
-        if(System.getProperty("os.name").contains("Windows")) {
+        if (System.getProperty("os.name").contains("Windows")) {
             return this.PARTIAL_INPUT_FILE_PATH;
-        }
-        else {
+        } else {
             return this.PARTIAL_INPUT_FILE_PATH.replaceAll("\\\\", "/");
         }
     }
 
     public String getPartialOutputFilePath() {
-        if(System.getProperty("os.name").contains("Windows")) {
+        if (System.getProperty("os.name").contains("Windows")) {
             return this.PARTIAL_OUTPUT_FILE_PATH;
-        }
-        else {
+        } else {
             return this.PARTIAL_OUTPUT_FILE_PATH.replaceAll("\\\\", "/");
         }
     }

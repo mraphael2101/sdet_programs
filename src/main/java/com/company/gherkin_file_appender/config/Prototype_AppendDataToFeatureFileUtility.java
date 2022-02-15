@@ -137,7 +137,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                         if(!(range[0] == 0)) {
                             bw.write(firstRow);
                         }
-                        for (String str : getRowRange(range[0], range[1])) {
+                        for (String str : getRowRangeFromInputFileArrayList(range[0], range[1])) {
                             bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
                         }
                     }
@@ -147,7 +147,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                     break;
                 case "row":
                     bw.write(firstRow);
-                    String rowset = getSpecificRow(range[0]);
+                    String rowset = getSpecificRowFromInputFileArrayList(range[0]);
                     bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
                     break;
             }
@@ -159,7 +159,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         }
     }
 
-    public String getSpecificRow(int rowIndex) {
+    public String getSpecificRowFromInputFileArrayList(int rowIndex) {
         for (int i = 0; i < inputFileAsList.size(); i++) {
             if (i == rowIndex - 1) {
                 return inputFileAsList.get(i);
@@ -168,7 +168,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return null;
     }
 
-    public List<String> getRowRange(int rangeStart, int rangeEnd) {
+    public List<String> getRowRangeFromInputFileArrayList(int rangeStart, int rangeEnd) {
         inputFileSubsetAsList.clear();
         for (int i = 0; i < inputFileAsList.size(); i++) {
             if (i >= rangeStart && i <= rangeEnd) {
@@ -178,12 +178,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return inputFileSubsetAsList;
     }
 
-    public List<String> getColumnSubsetOfInputFile(int firstColIndex, int lastColIndex) {
-        inputFileSubsetAsTwoDimArr = Arrays.copyOfRange(inputFileAsTwoDimArr, firstColIndex, lastColIndex);
-        return inputFileSubsetAsList;
-    }
-
-    public List<String> getRowSubsetOfInputFile(long lastRowIndex) {
+    public List<String> getRowSubsetFromInputFile2DArray(long lastRowIndex) {
         inputFileSubsetAsTwoDimArr = Arrays.stream(inputFileAsTwoDimArr)
                 .limit(lastRowIndex)
                 .toArray(String[][]::new);
@@ -197,14 +192,23 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return inputFileSubsetAsList;
     }
 
-    public List<ResultSelection> filterReturnsList(String[][] array, Predicate<String> predicate, int column) {
+    public List<String> getColumnSubsetFromInputFileArrayList(int firstColIndex, int lastColIndex) {
+        inputFileSubsetAsTwoDimArr = Arrays.copyOfRange(inputFileAsTwoDimArr, firstColIndex, lastColIndex);
+        return inputFileSubsetAsList;
+    }
+
+    public List<String> getColumnSubsetFromInputFile2DArray() {
+        return null;
+    }
+
+    public List<ResultSelection> filterRowsByList(String[][] array, Predicate<String> predicate, int column) {
         return IntStream.range(0, array.length)
                 .filter(i -> predicate.test(array[i][column]))
                 .mapToObj(i -> new ResultSelection(i, copyOf(array[i], array[i].length)))
                 .collect(toList());
     }
 
-    public Map<Integer, String[]> filterReturnsMap(String[][] array, Predicate<String> predicate, int column) {
+    public Map<Integer, String[]> filterRowsByMap(String[][] array, Predicate<String> predicate, int column) {
         TreeMap<Integer, String[]> result = new TreeMap<>();
         for (int i = 0; i < array.length; i++) {
             if (predicate.test(array[i][column])) {

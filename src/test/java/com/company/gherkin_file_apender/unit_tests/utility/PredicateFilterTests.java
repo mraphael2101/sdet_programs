@@ -31,7 +31,7 @@ public class PredicateFilterTests {
     public void filterResultsUsingPredicate_StringContains() {
         String value = "Concorde";
         Predicate<String> predStringContains = s -> (s.contains(value));
-        List<ResultSelection> resultList = filtersWithPredsAndStreams.filterReturnsList(array2d, predStringContains, 0);
+        List<ResultSelection> resultList = filtersWithPredsAndStreams.filterRowsByList(array2d, predStringContains, 0);
         resultList.forEach(out::println);
     }
 
@@ -39,7 +39,7 @@ public class PredicateFilterTests {
     public void filterResultsUsingPredicate_DoubleLessThan() {
         double value = 100000;
         Predicate<String> predDoubleLessThan = s -> (parseDouble(s) < value);
-        List<ResultSelection> resultList = filtersWithPredsAndStreams.filterReturnsList(array2d, predDoubleLessThan, 1);
+        List<ResultSelection> resultList = filtersWithPredsAndStreams.filterRowsByList(array2d, predDoubleLessThan, 1);
         resultList.forEach(out::println);
     }
 
@@ -47,7 +47,7 @@ public class PredicateFilterTests {
     public void filterResultsUsingPredicate_DoubleGreaterThan() {
         double value = 75000;
         Predicate<String> predDoubleGreaterThan = s -> (parseDouble(s) > value);
-        Map<Integer, String[]> resultMap = filtersWithPredsAndStreams.filterReturnsMap(array2d, predDoubleGreaterThan, 1);
+        Map<Integer, String[]> resultMap = filtersWithPredsAndStreams.filterRowsByMap(array2d, predDoubleGreaterThan, 1);
         resultMap.forEach((k, v) -> out.format("%d: %s%n", k, Arrays.toString(v)));
     }
 }

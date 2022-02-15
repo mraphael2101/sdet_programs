@@ -7,12 +7,12 @@ public class GetColumnSubsetOfInputFileTests extends TestBase {
     @Test
     public void retrieveSingleColumnFromInputFileTest() {
         simOnlyPlanUtility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
-        print(simOnlyPlanUtility.getColumnSubsetOfInputFile(2, 2));
+        print(simOnlyPlanUtility.getColumnSubsetFromInputFileArrayList(2, 2));
     }
 
     @Test
     public void retrieveColumnRangeFromInputFileTest() {
         simOnlyPlanUtility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
-        print(simOnlyPlanUtility.getColumnSubsetOfInputFile(1, 3));
+        print(simOnlyPlanUtility.getColumnSubsetFromInputFileArrayList(1, 3));
     }
 }

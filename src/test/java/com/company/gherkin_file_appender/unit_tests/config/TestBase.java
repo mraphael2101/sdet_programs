@@ -1,6 +1,7 @@
 package com.company.gherkin_file_appender.unit_tests.config;
 
 import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
+import com.company.gherkin_file_appender.config.ResultSelection;
 import org.junit.Before;
 
 import java.util.List;

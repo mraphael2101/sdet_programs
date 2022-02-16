@@ -2,6 +2,7 @@ package com.company.gherkin_file_appender.unit_tests.utility;
 
 import com.company.gherkin_file_appender.config.ResultSelection;
 import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
+import com.company.gherkin_file_appender.unit_tests.config.TestBase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import java.util.function.Predicate;
 import static java.lang.Double.parseDouble;
 import static java.lang.System.out;
 
-public class PredicateFilterTests {
+public class PredicateFilterTests extends TestBase {
     Prototype_AppendDataToFeatureFileUtility filtersWithPredsAndStreams;
 
     String[][] array2d = {

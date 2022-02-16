@@ -6,6 +6,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.util.Arrays.copyOf;
@@ -178,20 +179,6 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return inputFileSubsetAsList;
     }
 
-    public List<String> getRowSubsetFromInputFile2DArray(long lastRowIndex) {
-        inputFileSubsetAsTwoDimArr = Arrays.stream(inputFileAsTwoDimArr)
-                .limit(lastRowIndex)
-                .toArray(String[][]::new);
-
-        inputFileSubsetAsList.clear();
-
-        for (int i = 0; i < inputFileSubsetAsTwoDimArr.length; i++) {
-            for (int j = 0; j < inputFileSubsetAsTwoDimArr[0].length; j++)
-                inputFileSubsetAsList.add(inputFileSubsetAsTwoDimArr[i][j]);
-        }
-        return inputFileSubsetAsList;
-    }
-
     public List<ResultSelection> filterRowsByList(String[][] array, Predicate<String> predicate, int column) {
         return IntStream.range(0, array.length)
                 .filter(i -> predicate.test(array[i][column]))
@@ -209,13 +196,14 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return result;
     }
 
-    public List<String> getColumnSubsetFromInputFileArrayList(int firstColIndex, int lastColIndex) {
-        inputFileSubsetAsTwoDimArr = Arrays.copyOfRange(inputFileAsTwoDimArr, firstColIndex, lastColIndex);
-        return inputFileSubsetAsList;
-    }
+    public List<String> getColumnSubsetFromInputFile2DArray(int colIndex) {
+        var columnSubset = List.of(Arrays.stream(inputFileAsTwoDimArr)
+                .map(object -> object[colIndex])
+                .collect(toList()));
 
-    public List<String> getColumnSubsetFromInputFile2DArray() {
-        return null;
+        return columnSubset.stream()
+                .map( Object::toString )
+                .collect( Collectors.toList() );
     }
 
     public String getFileName() {

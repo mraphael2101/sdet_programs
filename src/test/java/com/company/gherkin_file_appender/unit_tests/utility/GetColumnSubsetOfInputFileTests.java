@@ -16,12 +16,14 @@ public class GetColumnSubsetOfInputFileTests extends TestBase {
     @Test
     public void retrieveSingleColumnFromInputFileTest() {
         utility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
-        print(utility.getColumnSubsetFromInputFile2DArray(0));
+        print(utility.getSpecificColumnFromInputFile2DArray(0));
+        print(utility.getSpecificColumnFromInputFile2DArray(1));
     }
 
     @Test
     public void retrieveColumnRangeFromInputFileTest() {
         utility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
-        print(utility.getColumnSubsetFromInputFile2DArray(3));
+        // TODO Implement this
+        print(utility.getColumnSubsetFromInputFile2DArray(0, 1));
     }
 }

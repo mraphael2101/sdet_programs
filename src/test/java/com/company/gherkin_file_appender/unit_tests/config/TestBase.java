@@ -8,16 +8,9 @@ import java.util.List;
 
 public class TestBase {
 
-    //@InjectMocks
     protected Prototype_AppendDataToFeatureFileUtility simOnlyPlanUtility;
-
     protected List<String> rows;
     private String fileName;
-
-    //@Mock
-    //Type1 myType1 = new Type1();
-    //@Mock
-    //Type2 myType2 = new Type2();
 
     public TestBase() {
         setFileName("SampleData.csv");
@@ -25,7 +18,6 @@ public class TestBase {
 
     @Before
     public void beforeTest() {
-        //MockitoAnnotations.openMocks(this);
         simOnlyPlanUtility = new Prototype_AppendDataToFeatureFileUtility();
         rows = simOnlyPlanUtility.readDataSourceFileIntoList(getFileName());
     }

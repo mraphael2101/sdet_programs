@@ -19,13 +19,4 @@ public class GetRowSubsetOfInputFileTests extends TestBase {
         assertEquals("[Row 1 Col 1, Row 1 Col 2, Row 1 Col 3, Row 1 Col 4, Row 2 Col 1, Row 2 Col 2, Row 2 Col 3, Row 2 Col 4]",
                 simOnlyPlanUtility.getRowRangeFromInputFileArrayList(1,2).toString());
     }
-
-    @Test
-    public void mockitoKeyFeaturesExample() {
-        // mock the value returned when calling a specific method
-        //when(testInfo.getDisplayName()).thenReturn("SampleTestName");
-
-        // verify that the method is called once
-        //verify(testInfoGetMethodNameServiceDemoImpl, times(1)).setTestMethodName(testInfo);
-    }
 }

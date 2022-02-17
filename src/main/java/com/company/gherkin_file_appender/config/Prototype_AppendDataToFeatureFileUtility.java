@@ -8,9 +8,11 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.copyOf;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.IntStream.range;
 
 public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
@@ -180,7 +182,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     }
 
     public List<ResultSelection> filterRowsByList(String[][] array, Predicate<String> predicate, int column) {
-        return IntStream.range(0, array.length)
+        return range(0, array.length)
                 .filter(i -> predicate.test(array[i][column]))
                 .mapToObj(i -> new ResultSelection(i, copyOf(array[i], array[i].length)))
                 .collect(toList());
@@ -197,9 +199,9 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     }
 
     public List<String> getSpecificColumnFromInputFile2DArray(int colIndex) {
-        var columnSubset = List.of(Arrays.stream(inputFileAsTwoDimArr)
+        var columnSubset = Arrays.stream(inputFileAsTwoDimArr)
                 .map(object -> object[colIndex])
-                .collect(toList()));
+                .collect(toList());
 
         return columnSubset.stream()
                 .map(objects -> objects.toString())
@@ -207,13 +209,9 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     }
 
     public List<String> getColumnRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
-        var columnSubset = List.of(Arrays.stream(inputFileAsTwoDimArr)
-                .map(object -> object[rangeStart])
-                .collect(toList()));
-
-        return columnSubset.stream()
-                .map(objects -> objects.toString())
-                .collect( Collectors.toList() );
+        //Arrays.stream(inputFileAsTwoDimArr).flatMap(x -> Arrays.stream(x)).toArray();
+        //https://stackoverflow.com/questions/22601036/stream-from-two-dimensional-array-in-java
+        return null;
     }
 
     public String getFileName() {

@@ -8,13 +8,14 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class MockitoExample extends TestBase_Mocked {
+public class MockitoExampleTests extends TestBase_Mocked {
     private TariffOffering tariffOffering1;
     private TariffOffering tariffOffering2;
     private List<TariffOffering> tariffOfferingList;
 
     @Test
     public void mockitoKeyFeaturesExample() {
+        //TODO
         // mock the value returned when calling a specific method
         when(utility.getPartialOutputFilePath()).thenReturn("SampleTestName");
 

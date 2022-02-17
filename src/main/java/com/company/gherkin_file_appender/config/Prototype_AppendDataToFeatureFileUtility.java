@@ -202,13 +202,18 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                 .collect(toList()));
 
         return columnSubset.stream()
-                .map(object -> object.toString())
-                .collect(Collectors.toList());
+                .map(objects -> objects.toString())
+                .collect( Collectors.toList() );
     }
 
-    public List<String> getColumnSubsetFromInputFile2DArray(int rangeStart, int rangeEnd) {
-        //TODO
-        return null;
+    public List<String> getColumnRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
+        var columnSubset = List.of(Arrays.stream(inputFileAsTwoDimArr)
+                .map(object -> object[rangeStart])
+                .collect(toList()));
+
+        return columnSubset.stream()
+                .map(objects -> objects.toString())
+                .collect( Collectors.toList() );
     }
 
     public String getFileName() {

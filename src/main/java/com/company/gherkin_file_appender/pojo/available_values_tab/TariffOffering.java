@@ -5,11 +5,13 @@ public class TariffOffering {
     private String bssId;
     private String flatOffering;
     private String availableValue;
+    private PriceInformation priceInformation;
 
-    public TariffOffering(String bssId, String flatOffering, String availableValue) {
+    public TariffOffering(String bssId, String flatOffering, String availableValue, PriceInformation priceInformation) {
         this.bssId = bssId;
         this.flatOffering = flatOffering;
         this.availableValue = availableValue;
+        this.priceInformation = priceInformation;
     }
 
     public TariffOffering() {}
@@ -38,4 +40,11 @@ public class TariffOffering {
         this.availableValue = availableValue;
     }
 
+    public PriceInformation getPriceInformation() {
+        return priceInformation;
+    }
+
+    public void setPriceInformation(PriceInformation priceInformation) {
+        this.priceInformation = priceInformation;
+    }
 }

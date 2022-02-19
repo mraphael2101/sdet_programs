@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import static java.util.Arrays.copyOf;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
+import static java.util.stream.IntStream.rangeClosed;
 
 public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
@@ -204,7 +205,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         // Map two-dimensional array with indices
         inputFileSubsetAsList.clear();
         var intStream = range(0, inputFileAsTwoDimArr.length)
-                .flatMap(row -> range(rangeStart, rangeEnd)
+                .flatMap(row -> range(rangeStart-1, rangeEnd)
                         .map(col -> {
                             inputFileSubsetAsList.add(inputFileAsTwoDimArr[row][col]);
                             return row;

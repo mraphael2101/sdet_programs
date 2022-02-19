@@ -196,12 +196,8 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     }
 
     public List<String> getSpecificColumnFromInputFile2DArray(int colIndex) {
-        var columnSubset = Arrays.stream(inputFileAsTwoDimArr)
+        return Arrays.stream(inputFileAsTwoDimArr)
                 .map(object -> object[colIndex])
-                .collect(toList());
-
-        return columnSubset.stream()
-                .map(objects -> objects.toString())
                 .collect(toList());
     }
 

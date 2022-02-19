@@ -11,7 +11,7 @@ public class ResultSelection {
         this.row = row;
     }
 
-    // Only executed when this class is instantiated
+    // Only executed when the class is instantiated
     @Override
     public String toString() {
         return String.format("%d: %s", rowIndex, Arrays.toString(row));

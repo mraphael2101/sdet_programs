@@ -18,7 +18,7 @@ public class _02_Overriding_ToString {
 
         // Prints Johnstone 35
         _02_Overriding_ToString objRef = new _02_Overriding_ToString();
-        System.out.println(objRef.toString());
+        System.out.println(objRef);
     }
 
 }

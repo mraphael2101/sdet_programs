@@ -1,7 +1,9 @@
 package com.company.sdet_programs.multi_dim_array;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 
 public class _2D_Array_Example {
@@ -13,6 +15,17 @@ public class _2D_Array_Example {
     };
 
     public static void main(String[] args) {
+        var obj = Arrays.stream(arr)
+                .flatMap(x -> Arrays.stream(x)
+                .filter(y -> y.contains("row 1")))
+                .collect(toList());
 
+        _2D_Array_Example objRef = new _2D_Array_Example();
+        System.out.println(objRef);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s", Arrays.stream(arr).findFirst().get());
     }
 }

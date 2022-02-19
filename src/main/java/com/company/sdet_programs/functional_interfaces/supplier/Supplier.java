@@ -1,4 +1,4 @@
-package com.company.sdet_programs.supplier;
+package com.company.sdet_programs.functional_interfaces.supplier;
 
 @FunctionalInterface
 public interface Supplier<T> {

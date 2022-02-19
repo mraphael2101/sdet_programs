@@ -1,4 +1,4 @@
-package com.company.sdet_programs.supplier;
+package com.company.sdet_programs.functional_interfaces.supplier;
 
 /* In Java 8, Supplier is a functional interface;
    It takes no arguments and returns a result. */

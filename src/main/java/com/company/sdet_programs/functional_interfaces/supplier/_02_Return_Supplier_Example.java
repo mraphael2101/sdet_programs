@@ -1,4 +1,4 @@
-package com.company.sdet_programs.supplier;
+package com.company.sdet_programs.functional_interfaces.supplier;
 
 import java.util.ArrayList;
 import java.util.List;

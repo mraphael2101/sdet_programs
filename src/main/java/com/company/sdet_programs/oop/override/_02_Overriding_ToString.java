@@ -1,4 +1,4 @@
-package com.company.sdet_programs.override;
+package com.company.sdet_programs.oop.override;
 
 public class _02_Overriding_ToString {
 

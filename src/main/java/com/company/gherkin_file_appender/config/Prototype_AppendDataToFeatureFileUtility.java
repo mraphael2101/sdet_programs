@@ -204,13 +204,13 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     public List<String> getColumnRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
         // Mapping of the two-dim array with indices
         inputFileSubsetAsList.clear();
-        var intStream = range(0, inputFileAsTwoDimArr.length)
+        range(0, inputFileAsTwoDimArr.length)
                 .flatMap(row -> range(rangeStart-1, rangeEnd)
                         .map(col -> {
                             inputFileSubsetAsList.add(inputFileAsTwoDimArr[row][col]);
                             return row;
-                        }));
-        intStream.forEach(row -> {});
+                        }))
+                .forEach(row -> {});
         return inputFileSubsetAsList;
     }
 

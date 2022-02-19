@@ -17,7 +17,8 @@ public class _2D_Array_Example2 {
         final IntStream intStream = range(0, array2d.length).flatMap(row -> range(0, array2d[row].length).map(col -> {
             final String element = array2d[row][col];
             // E.g. multiply elements in odd numbered rows and columns by two.
-            return element;
+            //return element;
+            return 5;
         }));
         // Prints "1 4 3 8 10 12 7 16 9 ".
         intStream.forEachOrdered(n -> System.out.print(n + " "));

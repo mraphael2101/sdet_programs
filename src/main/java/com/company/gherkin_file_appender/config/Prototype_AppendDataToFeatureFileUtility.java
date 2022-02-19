@@ -6,9 +6,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static java.util.Arrays.copyOf;
 import static java.util.stream.Collectors.toList;
@@ -205,7 +202,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
 
         return columnSubset.stream()
                 .map(objects -> objects.toString())
-                .collect( Collectors.toList() );
+                .collect(toList());
     }
 
     public List<String> getColumnRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {

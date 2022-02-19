@@ -90,7 +90,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         InputStream inStream = null;
         OutputStream outStream = null;
         try {
-            File fromFile = new File(USER_DIR + getPartialOutputFilePath()+ fileName);
+            File fromFile = new File(USER_DIR + getPartialOutputFilePath() + fileName);
             File toFile = new File(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
             setFileName(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
             inStream = new FileInputStream(fromFile);
@@ -134,14 +134,13 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                     break;
                 case "rowsrange":
                     if (range.length == 2) {
-                        if(!(range[0] == 0)) {
+                        if (!(range[0] == 0)) {
                             bw.write(firstRow);
                         }
                         for (String str : getRowRangeFromInputFileArrayList(range[0], range[1])) {
                             bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
                         }
-                    }
-                    else if(range.length > 2) {
+                    } else if (range.length > 2) {
                         throw new RuntimeException("A range cannot have more than two values");
                     }
                     break;
@@ -204,11 +203,14 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     public List<String> getColumnRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
         // Map two-dimensional array with indices
         inputFileSubsetAsList.clear();
-        var intStream = range(0, inputFileAsTwoDimArr.length).flatMap(row -> range(rangeStart, rangeEnd).map(col -> {
-            inputFileSubsetAsList.add(inputFileAsTwoDimArr[row][col]);
-            return row;
-        }));
-        intStream.forEach(row -> {});
+        var intStream = range(0, inputFileAsTwoDimArr.length)
+                .flatMap(row -> range(rangeStart, rangeEnd)
+                        .map(col -> {
+                            inputFileSubsetAsList.add(inputFileAsTwoDimArr[row][col]);
+                            return row;
+                        }));
+        intStream.forEach(row -> {
+        });
         return inputFileSubsetAsList;
     }
 
@@ -226,20 +228,18 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
 
     public String getPartialInputFilePath() {
         String PARTIAL_INPUT_FILE_PATH = "\\src\\test\\resources\\input_data\\";
-        if(System.getProperty("os.name").contains("Windows")) {
+        if (System.getProperty("os.name").contains("Windows")) {
             return PARTIAL_INPUT_FILE_PATH;
-        }
-        else {
+        } else {
             return PARTIAL_INPUT_FILE_PATH.replaceAll("\\\\", "/");
         }
     }
 
     public String getPartialOutputFilePath() {
         String PARTIAL_OUTPUT_FILE_PATH = "\\src\\test\\resources\\features\\";
-        if(System.getProperty("os.name").contains("Windows")) {
+        if (System.getProperty("os.name").contains("Windows")) {
             return PARTIAL_OUTPUT_FILE_PATH;
-        }
-        else {
+        } else {
             return PARTIAL_OUTPUT_FILE_PATH.replaceAll("\\\\", "/");
         }
     }

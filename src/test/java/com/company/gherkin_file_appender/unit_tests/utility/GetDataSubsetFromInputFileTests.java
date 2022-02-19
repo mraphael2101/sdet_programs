@@ -16,6 +16,7 @@ public class GetDataSubsetFromInputFileTests extends TestBase {
     @Test
     public void retrieveSingleColumnFromInputFileTest() {
         utility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
+
         print(utility.getSpecificColumnFromInputFile2DArray(0));
         assertEquals("[Row 1 Col 1, Row 2 Col 1, Row 3 Col 1, Row 4 Col 1, Row 5 Col 1, Row 6 Col 1, Row 7 Col 1]",
                 utility.getSpecificColumnFromInputFile2DArray(0).toString());
@@ -28,11 +29,10 @@ public class GetDataSubsetFromInputFileTests extends TestBase {
     @Test
     public void retrieveColumnRangeFromInputFileTest() {
         utility.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
-        //TODO
-        utility.getColumnRangeFromInputFile2DArray(0, 2);
 
-        //assertEquals("Row 3 Col 1, Row 3 Col 2, Row 3 Col 3, Row 3 Col 4",
-        //        utility.getColumnRangeFromInputFile2DArray(4));
+        print(utility.getColumnRangeFromInputFile2DArray(0, 2));
+        assertEquals("[Row 1 Col 1, Row 2 Col 1, Row 3 Col 1, Row 4 Col 1, Row 5 Col 1, Row 6 Col 1, Row 7 Col 1]",
+                utility.getColumnRangeFromInputFile2DArray(0,1).toString());
     }
 
     @Test

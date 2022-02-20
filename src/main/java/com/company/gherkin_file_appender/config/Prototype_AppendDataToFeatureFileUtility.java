@@ -24,7 +24,8 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         this.inputFileSubsetAsList = new ArrayList<>();
     }
 
-    public String[][] readCleanseInputDataSourceFile(String fileName, int lastRowIndex, int lastColIndex) {
+    @Override
+    public String[][] readCleanseDataSourceFileInto2DArray(String fileName, int lastRowIndex, int lastColIndex) {
         BufferedReader fileReader = null;
         String line = "";
         try {

@@ -25,13 +25,18 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     }
 
     @Override
-    public String[][] readCleanseDataSourceFileInto2DArray(String fileName, int lastRowIndex, int lastColIndex) {
+    public String[][] readCleanseDataSourceFileInto2DArray(String fileName) {
         BufferedReader fileReader = null;
         String line = "";
+        long rowCount = 0;
+        String[] tokens = new String[0];
         try {
             fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
+            rowCount = fileReader.lines().count();
+            // re-initialise
+            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
             while ((line = fileReader.readLine()) != null) {
-                String[] tokens = line.split(",");
+                tokens = line.split(",");
                 if (tokens.length > 0) {
                     // Cleansing happens here
                     int FIELD_1_INDEX = 0;
@@ -45,11 +50,11 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         } catch (IOException e) {
             e.printStackTrace();
         }
-        inputFileAsTwoDimArr = new String[lastRowIndex - 1][lastColIndex];
+        inputFileAsTwoDimArr = new String[(int) rowCount - 1][tokens.length];
         int k = 0;
         try {
-            for (int i = 0; i < lastRowIndex - 1; i++) {
-                for (int j = 0; j < lastColIndex; j++) {
+            for (int i = 0; i < rowCount - 1; i++) {
+                for (int j = 0; j < tokens.length; j++) {
                     inputFileAsTwoDimArr[i][j] = inputFileAsList.get(k++);
                 }
             }

@@ -16,7 +16,7 @@ public class GetDataSubsetFromInputFileTests extends TestBase {
 
     @Test
     public void retrieveSingleColumnFromInputFileTest() {
-        utility1.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
+        print(utility1.readAndCleanseInputDataFile("SampleData.csv", 8, 4));
 
         print(utility1.getSpecificColumnFromInputFile2DArray(0));
         assertEquals("[Row 1 Col 1, Row 2 Col 1, Row 3 Col 1, Row 4 Col 1, Row 5 Col 1, Row 6 Col 1, Row 7 Col 1]",
@@ -29,7 +29,7 @@ public class GetDataSubsetFromInputFileTests extends TestBase {
 
     @Test
     public void retrieveColumnRangeFromInputFileTest() {
-        utility1.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
+        print(utility1.readAndCleanseInputDataFile("SampleData.csv", 8, 4));
 
         print(utility1.getColumnRangeFromInputFile2DArray(1, 3));
         assertEquals("[Row 1 Col 1,  Row 1 Col 2,  Row 1 Col 3, Row 2 Col 1,  Row 2 Col 2,  Row 2 Col 3, Row 3 Col 1,  Row 3 Col 2,  Row 3 Col 3, Row 4 Col 1,  Row 4 Col 2,  Row 4 Col 3, Row 5 Col 1,  Row 5 Col 2,  Row 5 Col 3, Row 6 Col 1,  Row 6 Col 2,  Row 6 Col 3, Row 7 Col 1,  Row 7 Col 2,  Row 7 Col 3]",
@@ -42,7 +42,7 @@ public class GetDataSubsetFromInputFileTests extends TestBase {
 
     @Test
     public void retrieveSingleRowFromInputFileTest() {
-        utility2.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
+        utility2.readDataSourceFileIntoList("SampleData.csv");
 
         print(utility2.getSpecificRowFromInputFileArrayList(4));
         assertEquals("Row 3 Col 1, Row 3 Col 2, Row 3 Col 3, Row 3 Col 4",
@@ -51,7 +51,7 @@ public class GetDataSubsetFromInputFileTests extends TestBase {
 
     @Test
     public void retrieveRowRangeFromInputFileTest(){
-        utility2.readAndCleanseInputDataFile("SampleData.csv", 8, 4);
+        utility2.readDataSourceFileIntoList("SampleData.csv");
 
         print(utility2.getRowRangeFromInputFileArrayList(1,2));
         assertEquals("[Row 1 Col 1, Row 1 Col 2, Row 1 Col 3, Row 1 Col 4, Row 2 Col 1, Row 2 Col 2, Row 2 Col 3, Row 2 Col 4]",

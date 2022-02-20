@@ -36,17 +36,9 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                 if (tokens.length > 0) {
                     // Cleansing happens here
                     int FIELD_1_INDEX = 0;
-                    if (tokens[FIELD_1_INDEX].contains("\t"))
+                    if (tokens[FIELD_1_INDEX].contains("\t")) {
                         tokens[FIELD_1_INDEX] = tokens[FIELD_1_INDEX].replace("\t", "");
-                    int FIELD_2_INDEX = 1;
-                    if (tokens[FIELD_2_INDEX].contains("\t"))
-                        tokens[FIELD_2_INDEX] = tokens[FIELD_2_INDEX].replace("\t", "");
-                    int FIELD_3_INDEX = 2;
-                    if (tokens[FIELD_3_INDEX].contains("\t"))
-                        tokens[FIELD_3_INDEX] = tokens[FIELD_3_INDEX].replace("\t", "");
-                    int FIELD_4_INDEX = 3;
-                    if (tokens[FIELD_4_INDEX].contains("\t"))
-                        tokens[FIELD_4_INDEX] = tokens[FIELD_4_INDEX].replace("\t", "");
+                    }
                 }
                 inputFileAsList.addAll(Arrays.asList(tokens));
             }

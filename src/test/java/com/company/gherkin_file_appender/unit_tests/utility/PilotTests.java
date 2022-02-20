@@ -16,7 +16,6 @@ public class PilotTests extends TestBase {
         assertTrue(utility2.copyFeatureFile("demo.feature"));
     }
 
-    // *** Happy Path Scenarios ***
     @Test
     public void appendAllSourceDataToFeatureFile() {
         assertTrue(utility2.copyFeatureFile("demo.feature"));
@@ -43,5 +42,5 @@ public class PilotTests extends TestBase {
         assertTrue(utility2.copyFeatureFile("demo.feature"));
         assertTrue(utility2.appendDataToNewFeatureFile("row", index));
     }
-    // *** Ends Here ***
+
 }

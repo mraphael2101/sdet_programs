@@ -3,6 +3,7 @@ package com.company.gherkin_file_appender.unit_tests.config;
 import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
 import org.junit.Before;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TestBase {
@@ -21,8 +22,8 @@ public class TestBase {
         System.out.println(value);
     }
 
-    protected void print(String[][] fileInput2DArray) {
-        //TODO
+    protected void print(String[][] inputFileAsTwoDimArr) {
+        System.out.println(Arrays.deepToString(inputFileAsTwoDimArr));
     }
 
     protected void print(List<String> fileInputRowsList) {

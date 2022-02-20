@@ -10,7 +10,6 @@ import java.util.function.Predicate;
 import static java.util.Arrays.copyOf;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
-import static java.util.stream.IntStream.rangeClosed;
 
 public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
@@ -25,12 +24,11 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         this.inputFileSubsetAsList = new ArrayList<>();
     }
 
-    public List<String> readAndCleanseInputDataFile(String fileName, int lastRowIndex, int lastColIndex) {
+    public String[][] readCleanseInputDataSourceFile(String fileName, int lastRowIndex, int lastColIndex) {
         BufferedReader fileReader = null;
         String line = "";
         try {
             fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
-            fileReader.readLine();
             while ((line = fileReader.readLine()) != null) {
                 String[] tokens = line.split(",");
                 if (tokens.length > 0) {
@@ -46,7 +44,6 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         inputFileAsTwoDimArr = new String[lastRowIndex - 1][lastColIndex];
         int k = 0;
         try {
@@ -58,13 +55,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         } catch (IndexOutOfBoundsException ex) {
             System.out.println("Mismatch between lastRowIndex and/or lastColIndex params, and the no of input file records and/or columns");
         }
-
-        for (String[] row : inputFileAsTwoDimArr) {
-            for (String s : row) {
-                inputFileSubsetAsList.add(s);
-            }
-        }
-        return inputFileSubsetAsList;
+        return inputFileAsTwoDimArr;
     }
 
     @Override

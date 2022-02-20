@@ -17,7 +17,6 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     private final String LINE_SEPARATOR = System.lineSeparator();
     private final List<String> inputFileSubsetAsList;
     private List<String> inputFileAsList;
-    private String[][] inputFileSubsetAsTwoDimArr;
     private String[][] inputFileAsTwoDimArr;
     private String fileName;
 

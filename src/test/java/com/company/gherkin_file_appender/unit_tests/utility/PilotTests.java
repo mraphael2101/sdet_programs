@@ -12,11 +12,6 @@ public class PilotTests extends TestBase {
     }
 
     @Test
-    public void readAndCleanseInputDataTest() {
-        print(simOnlyPlanUtility.readAndCleanseInputDataFile("SampleData.csv", 4, 4));
-    }
-
-    @Test
     public void copyFeatureFileTest() {
         assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
     }

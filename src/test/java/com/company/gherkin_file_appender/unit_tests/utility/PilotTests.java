@@ -13,35 +13,35 @@ public class PilotTests extends TestBase {
 
     @Test
     public void copyFeatureFileTest() {
-        assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
+        assertTrue(utility2.copyFeatureFile("demo.feature"));
     }
 
     // *** Happy Path Scenarios ***
     @Test
     public void appendAllSourceDataToFeatureFile() {
-        assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
-        assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("alldata"));
+        assertTrue(utility2.copyFeatureFile("demo.feature"));
+        assertTrue(utility2.appendDataToNewFeatureFile("alldata"));
     }
 
     @Test
     public void appendRowRangeToFeatureFile_StartFromIndexZero() {
         int[] range = { 0, 3 };
-        assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
-        assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("rowsrange", range));
+        assertTrue(utility2.copyFeatureFile("demo.feature"));
+        assertTrue(utility2.appendDataToNewFeatureFile("rowsrange", range));
     }
 
     @Test
     public void appendRowRangeToFeatureFile_StartFromIndexOne() {
         int[] range = { 1, 4 };
-        assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
-        assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("rowsrange", range));
+        assertTrue(utility2.copyFeatureFile("demo.feature"));
+        assertTrue(utility2.appendDataToNewFeatureFile("rowsrange", range));
     }
 
     @Test
     public void appendSingleRowToFeatureFile() {
         int[] index = { 3 };
-        assertTrue(simOnlyPlanUtility.copyFeatureFile("demo.feature"));
-        assertTrue(simOnlyPlanUtility.appendDataToNewFeatureFile("row", index));
+        assertTrue(utility2.copyFeatureFile("demo.feature"));
+        assertTrue(utility2.appendDataToNewFeatureFile("row", index));
     }
     // *** Ends Here ***
 }

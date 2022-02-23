@@ -1,1 +1,8 @@
-junit4_parameterization/Prototype_JUnit4ParamsWithSelenium.class
+com\company\gherkin_file_appender\unit_tests\config\TestBase_Mocked.class
+com\company\gherkin_file_appender\unit_tests\utility\pilot\_01_SimTests.class
+com\company\gherkin_file_appender\unit_tests\utility\capabilities\GetDataSubsetFromInputFileTests.class
+com\company\junit4_parameterization\Prototype_JUnit4ParamsWithSelenium.class
+com\company\gherkin_file_appender\unit_tests\mockito\MockedTests.class
+com\company\gherkin_file_appender\unit_tests\config\TestBase.class
+com\company\gherkin_file_appender\unit_tests\utility\capabilities\PredicateFilterTests.class
+com\company\gherkin_file_appender\unit_tests\utility\capabilities\PilotTests.class

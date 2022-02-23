@@ -107,14 +107,13 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return true;
     }
 
-    @Override
     public boolean appendDataToNewFeatureFile(String mode, int... range) {
         FileWriter fw = null;
         try {
             fw = new FileWriter(getFileName(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             String firstRow = "|" + getInputFileAsList().get(0).replaceAll(",", "|") + "|" + LINE_SEPARATOR;
-
+            String rowset = "";
             switch (mode.toLowerCase()) {
                 case "alldata":
                     for (String str : getInputFileAsList()) {
@@ -135,7 +134,24 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                     break;
                 case "row":
                     bw.write(firstRow);
-                    String rowset = getSpecificRowFromInputFileArrayList(range[0]);
+                    rowset = getSpecificRowFromInputFileArrayList(range[0]);
+                    bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    break;
+                case "colsrange":
+                    if (range.length == 2) {
+                        if (!(range[0] == 1) || !(range[0] == 0)) {
+                            bw.write(firstRow);
+                        }
+                        for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
+                            bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
+                        }
+                    } else if (range.length > 2) {
+                        throw new RuntimeException("A range cannot have more than two values");
+                    }
+                    break;
+                case "column":
+                    bw.write(firstRow);
+                    rowset = getSpecificColumnFromInputFile2DArray(range[0]).get(0);
                     bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
                     break;
             }

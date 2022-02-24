@@ -142,6 +142,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                     if (range.length > 2) {
                         throw new RuntimeException("A range cannot have more than two values");
                     }
+                    //TODO LINE BREAK BASED ON THE RANGE SIZE, AT PRESENT IS COMING IN A SINGLE COLUMN
                     else if (range.length == 2 && ((range[0] == 0) || range[0] == 1)) {
                         for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
                             bw.write("|" + str.replace("[","|")
@@ -158,6 +159,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                         }
                     }
                     break;
+                    //TODO TO BE UPDATED
                 case "column":
                     bw.write(firstRow);
                     rowset = getSpecificColumnFromInputFile2DArray(range[0]).get(0);

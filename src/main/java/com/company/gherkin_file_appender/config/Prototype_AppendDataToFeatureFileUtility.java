@@ -142,9 +142,11 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                         if (!(range[0] == 1) || !(range[0] == 0)) {
                             bw.write(firstRow);
                         }
-                        for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
-                            bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
-                        }
+                        bw.write(getColumnRangeFromInputFile2DArray(range[0], range[1]).toString().replace(",", "|") + "|" + LINE_SEPARATOR);
+
+                        //for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
+                        //    bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
+                        //}
                     } else if (range.length > 2) {
                         throw new RuntimeException("A range cannot have more than two values");
                     }

@@ -1,6 +1,6 @@
 package com.company.gherkin_file_appender.unit_tests.mockito;
 
-import com.company.gherkin_file_appender.pojo.available_values_tab.TariffOffering;
+import com.company.gherkin_file_appender.pojo.first_tab.TariffOffering;
 import com.company.gherkin_file_appender.unit_tests.config.TestBase_Mocked;
 import org.junit.Test;
 

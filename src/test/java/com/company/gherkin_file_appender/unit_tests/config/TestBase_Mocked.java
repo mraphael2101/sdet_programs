@@ -1,8 +1,8 @@
 package com.company.gherkin_file_appender.unit_tests.config;
 
 import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
-import com.company.gherkin_file_appender.pojo.available_values_tab.PriceInformation;
-import com.company.gherkin_file_appender.pojo.available_values_tab.TariffOffering;
+import com.company.gherkin_file_appender.pojo.first_tab.PriceInformation;
+import com.company.gherkin_file_appender.pojo.first_tab.TariffOffering;
 import org.junit.BeforeClass;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

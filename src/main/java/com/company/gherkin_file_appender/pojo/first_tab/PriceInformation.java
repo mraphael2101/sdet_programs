@@ -1,4 +1,4 @@
-package com.company.gherkin_file_appender.pojo.available_values_tab;
+package com.company.gherkin_file_appender.pojo.first_tab;
 
 public class PriceInformation {
 

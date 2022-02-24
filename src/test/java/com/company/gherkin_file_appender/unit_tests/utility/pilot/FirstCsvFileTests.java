@@ -6,23 +6,24 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class _01_SimTests extends TestBase {
+public class FirstCsvFileTests extends TestBase {
     private Prototype_AppendDataToFeatureFileUtility utility;
 
-    public _01_SimTests() {
+    public FirstCsvFileTests() {
         utility = new Prototype_AppendDataToFeatureFileUtility();
     }
 
     @Test
-    public void happyPath_Sim_2DArray() {
+    public void happyPath_RetrieveColumnRange() {
         utility.readCleanseDataSourceFileInto2DArray("SampleData.csv");
         int[] range = { 1, 3 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
         assertTrue(utility.appendDataToNewFeatureFile("colsrange", range));
     }
 
+
     @Test
-    public void happyPath_Sim_ArrayList() {
+    public void happyPath_RetrieveRowRange() {
         utility.readDataSourceFileIntoList("SampleData.csv");
         int[] range = { 2, 7 };
         assertTrue(utility.copyFeatureFile("demo.feature"));

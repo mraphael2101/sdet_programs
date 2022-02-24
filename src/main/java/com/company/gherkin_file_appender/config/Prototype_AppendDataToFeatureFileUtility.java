@@ -139,10 +139,13 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                     break;
                 case "colsrange":
                     if (range.length == 2) {
-                        if (!(range[0] == 1) || !(range[0] == 0)) {
+                        if (!(range[0] == 1)) {
                             bw.write(firstRow);
                         }
-                        bw.write(getColumnRangeFromInputFile2DArray(range[0], range[1]).toString().replace(",", "|") + "|" + LINE_SEPARATOR);
+                        bw.write(getColumnRangeFromInputFile2DArray(range[0], range[1])
+                                .toString().replace("[","|")
+                                .replace("]","")
+                                .replace(",", "|") + "|" + LINE_SEPARATOR);
 
                         //for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
                         //    bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);

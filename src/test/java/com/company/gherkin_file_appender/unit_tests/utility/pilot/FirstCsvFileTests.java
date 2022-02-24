@@ -14,13 +14,20 @@ public class FirstCsvFileTests extends TestBase {
     }
 
     @Test
+    public void happyPath_RetrieveColumn() {
+        utility.readCleanseDataSourceFileInto2DArray("SampleData.csv");
+        int[] range = { 1 };
+        assertTrue(utility.copyFeatureFile("demo.feature"));
+        assertTrue(utility.appendDataToNewFeatureFile("column", range));
+    }
+
+    @Test
     public void happyPath_RetrieveColumnRange() {
         utility.readCleanseDataSourceFileInto2DArray("SampleData.csv");
         int[] range = { 1, 3 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
         assertTrue(utility.appendDataToNewFeatureFile("colsrange", range));
     }
-
 
     @Test
     public void happyPath_RetrieveRowRange() {

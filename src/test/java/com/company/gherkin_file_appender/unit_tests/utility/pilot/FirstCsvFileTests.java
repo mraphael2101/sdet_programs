@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 public class FirstCsvFileTests extends TestBase {
     private Prototype_AppendDataToFeatureFileUtility utility;
+    private int[] range;
 
     public FirstCsvFileTests() {
         utility = new Prototype_AppendDataToFeatureFileUtility();
@@ -16,7 +17,7 @@ public class FirstCsvFileTests extends TestBase {
     @Test
     public void happyPath_RetrieveColumn() {
         utility.readCleanseDataSourceFileInto2DArray("SampleData.csv");
-        int[] range = { 1 };
+        range = new int[] { 1 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
         assertTrue(utility.appendDataToNewFeatureFile("column", range));
     }
@@ -24,7 +25,7 @@ public class FirstCsvFileTests extends TestBase {
     @Test
     public void happyPath_RetrieveColumnRange() {
         utility.readCleanseDataSourceFileInto2DArray("SampleData.csv");
-        int[] range = { 1, 3 };
+        range = new int[] { 1, 3 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
         assertTrue(utility.appendDataToNewFeatureFile("colsrange", range));
     }
@@ -32,7 +33,7 @@ public class FirstCsvFileTests extends TestBase {
     @Test
     public void happyPath_RetrieveRowRange() {
         utility.readDataSourceFileIntoList("SampleData.csv");
-        int[] range = { 2, 7 };
+        range = new int[]  { 2, 7 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
         assertTrue(utility.appendDataToNewFeatureFile("rowsrange", range));
     }

@@ -107,6 +107,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return true;
     }
 
+    @Override
     public boolean appendDataToNewFeatureFile(String mode, int... range) {
         FileWriter fw = null;
         try {
@@ -138,20 +139,23 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                     bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
                     break;
                 case "colsrange":
-                    if (range.length == 2) {
-                        if (!(range[0] == 1)) {
-                            bw.write(firstRow);
-                        }
-                        bw.write(getColumnRangeFromInputFile2DArray(range[0], range[1])
-                                .toString().replace("[","|")
-                                .replace("]","")
-                                .replace(",", "|") + "|" + LINE_SEPARATOR);
-
-                        //for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
-                        //    bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
-                        //}
-                    } else if (range.length > 2) {
+                    if (range.length > 2) {
                         throw new RuntimeException("A range cannot have more than two values");
+                    }
+                    else if (range.length == 2 && ((range[0] == 0) || range[0] == 1)) {
+                        for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
+                            bw.write("|" + str.replace("[","|")
+                                    .replace("]","")
+                                    .replace(",", "|") + "|" + LINE_SEPARATOR);
+                        }
+                    }
+                    else {
+                        bw.write(firstRow);
+                        for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
+                            bw.write("|" + str.replace("[","|")
+                                    .replace("]","")
+                                    .replace(",", "|") + "|" + LINE_SEPARATOR);
+                        }
                     }
                     break;
                 case "column":
@@ -211,10 +215,15 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     }
 
     public List<String> getColumnRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
+        int startRange = rangeStart;
+        if(rangeStart <= 0) {
+            startRange = 1;
+        }
         // Mapping of the two-dim array with indices
         inputFileSubsetAsList.clear();
+        int finalRangeStart = startRange;
         range(0, inputFileAsTwoDimArr.length)
-                .flatMap(row -> range(rangeStart-1, rangeEnd)
+                .flatMap(row -> range(finalRangeStart, rangeEnd)
                         .map(col -> {
                             inputFileSubsetAsList.add(inputFileAsTwoDimArr[row][col]);
                             return row;

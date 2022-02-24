@@ -11,5 +11,4 @@ Feature: Web Demo
     When I fill in the form with user details
 
     Examples:
-      |Col 1 |Col 2 |Col 3 |Col 4 |
 

@@ -115,6 +115,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
             BufferedWriter bw = new BufferedWriter(fw);
             String firstRow = "|" + getInputFileAsList().get(0).replaceAll(",", "|") + "|" + LINE_SEPARATOR;
             String rowset = "";
+            int columnSize = range[1] - range[0];
             switch (mode.toLowerCase()) {
                 case "alldata":
                     for (String str : getInputFileAsList()) {
@@ -142,12 +143,18 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                     if (range.length > 2) {
                         throw new RuntimeException("A range cannot have more than two values");
                     }
-                    //TODO LINE BREAK BASED ON THE RANGE SIZE, AT PRESENT IS COMING IN A SINGLE COLUMN
+                    //TODO LINE BREAK BASED ON COLSIZE
                     else if (range.length == 2 && ((range[0] == 0) || range[0] == 1)) {
+                        int counter = 0;
                         for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
-                            bw.write("|" + str.replace("[","|")
-                                    .replace("]","")
-                                    .replace(",", "|") + "|" + LINE_SEPARATOR);
+                            if((counter/columnSize != 0)) {
+                                // print on same line
+                                // else print on new line
+                            }
+                            //bw.write("|" + str.replace("[","|")
+                            //        .replace("]","")
+                            //        .replace(",", "|") + "|" + LINE_SEPARATOR);
+                            counter++;
                         }
                     }
                     else {

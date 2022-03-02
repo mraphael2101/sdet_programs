@@ -14,8 +14,9 @@ import static java.util.stream.IntStream.range;
 public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_DataAppender {
     private final String USER_DIR = System.getProperty("user.dir");
     private final String LINE_SEPARATOR = System.lineSeparator();
-    private final List<String> inputFileSubsetAsList;
+    private List<String> inputFileSubsetAsList;
     private List<String> inputFileAsList;
+    private String[][] inputFileSubsetAsTwoDimArr;
     private String[][] inputFileAsTwoDimArr;
     private String fileName;
 
@@ -115,7 +116,10 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
             BufferedWriter bw = new BufferedWriter(fw);
             String firstRow = "|" + getInputFileAsList().get(0).replaceAll(",", "|") + "|" + LINE_SEPARATOR;
             String rowset = "";
-            int columnSize = range[1] - range[0];
+            int columnSize = 0;
+            if (range.length == 2) {
+                columnSize = range[1] - range[0];
+            }
             switch (mode.toLowerCase()) {
                 case "alldata":
                     for (String str : getInputFileAsList()) {
@@ -145,17 +149,9 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                     }
                     //TODO LINE BREAK BASED ON COLSIZE
                     else if (range.length == 2 && ((range[0] == 0) || range[0] == 1)) {
-                        int counter = 0;
-                        for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
-                            if((counter/columnSize != 0)) {
-                                // print on same line
-                                // else print on new line
-                            }
-                            //bw.write("|" + str.replace("[","|")
-                            //        .replace("]","")
-                            //        .replace(",", "|") + "|" + LINE_SEPARATOR);
-                            counter++;
-                        }
+                        inputFileSubsetAsList = getColumnRangeFromInputFile2DArray(range[0], range[1]);
+                        //inputFileSubsetAsTwoDimArr = getColumnRangeSubsetFromInputFile2DArray(range[0], range[1]);
+
                     }
                     else {
                         bw.write(firstRow);
@@ -166,11 +162,12 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                         }
                     }
                     break;
-                    //TODO TO BE UPDATED
                 case "column":
-                    bw.write(firstRow);
-                    rowset = getSpecificColumnFromInputFile2DArray(range[0]).get(0);
-                    bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    for (String str : getSpecificColumnFromInputFile2DArray(range[0])) {
+                        bw.write("|" + str.replace("[","|")
+                                .replace("]","")
+                                .replace(",", "|") + "|" + LINE_SEPARATOR);
+                    }
                     break;
             }
             bw.close();
@@ -239,6 +236,30 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                         }))
                 .forEach(row -> {});
         return inputFileSubsetAsList;
+    }
+
+    //TODO INCOMPLETE
+    private String[][] getColumnRangeSubsetFromInputFile2DArray(int rangeStart, int rangeEnd) {
+        int rowSize = inputFileAsList.size() - 1;
+        int colRangeSize = rangeEnd - rangeStart;
+        inputFileSubsetAsTwoDimArr = new String[inputFileAsList.size() - 1][colRangeSize];
+        int k = 0;
+        try {
+            //Reminder - there are 32 elements in the list k=32
+            for (int i = 0; i < rowSize; i++) {
+                System.out.println("");
+                for (int j = 0; j < colRangeSize; j++) {
+                    //inputFileAsTwoDimArr[i][j] = inputFileAsList.get(k++);
+                    inputFileAsList.get(k++);
+                    if(k >= rangeStart && k <= rangeEnd) {
+                        System.out.print(inputFileAsList.get(k));
+                    }
+                }
+            }
+        } catch (IndexOutOfBoundsException ex) {
+            System.out.println("Mismatch between lastRowIndex and/or lastColIndex params, and the no of input file records and/or columns");
+        }
+        return inputFileAsTwoDimArr;
     }
 
     public String getFileName() {

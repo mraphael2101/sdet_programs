@@ -56,7 +56,7 @@ public class Prototype_JUnit4ParamsWithSelenium {
         BufferedReader fileReader = null;   // Ignores the first line header record
         String line = "";
         try {
-            fileReader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\test\\resources\\SampleData.csv"));
+            fileReader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\test\\resources\\Sample_Data.csv"));
             fileReader.readLine();
 
             while ((line = fileReader.readLine()) != null) {

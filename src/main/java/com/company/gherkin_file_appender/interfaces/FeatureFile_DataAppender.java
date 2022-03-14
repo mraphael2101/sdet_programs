@@ -6,10 +6,10 @@ public interface FeatureFile_DataAppender {
 
     List<String> readDataSourceFileIntoList(String fileName);
 
-    String[][] readCleanseDataSourceFileInto2DArray(String fileName);
+    String[][] readCleanseDataSourceFileInto2DArray(String fileName, boolean cleanseSwitch);
 
     boolean copyFeatureFile(String fileName);
 
-    boolean appendDataToNewFeatureFile(String mode, int... range);
+    boolean appendDataToNewFeatureFile(String mode, int... rowRange);
 
 }

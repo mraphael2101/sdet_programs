@@ -12,57 +12,19 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 
 public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_DataAppender {
+    private boolean cleanseSwitch;
+    private String fileName;
+    private String excelTab = "";
     private final String USER_DIR = System.getProperty("user.dir");
     private final String LINE_SEPARATOR = System.lineSeparator();
     private List<String> inputFileSubsetAsList;
     private List<String> inputFileAsList;
     private String[][] inputFileSubsetAsTwoDimArr;
     private String[][] inputFileAsTwoDimArr;
-    private String fileName;
 
     public Prototype_AppendDataToFeatureFileUtility() {
         this.inputFileAsList = new ArrayList<>();
         this.inputFileSubsetAsList = new ArrayList<>();
-    }
-
-    @Override
-    public String[][] readCleanseDataSourceFileInto2DArray(String fileName) {
-        BufferedReader fileReader = null;
-        String line = "";
-        long rowCount = 0;
-        String[] tokens = new String[0];
-        try {
-            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
-            rowCount = fileReader.lines().count();
-            // re-initialise
-            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
-            while ((line = fileReader.readLine()) != null) {
-                tokens = line.split(",");
-                if (tokens.length > 0) {
-                    // Cleansing happens here
-                    int FIELD_1_INDEX = 0;
-                    if (tokens[FIELD_1_INDEX].contains("\t")) {
-                        tokens[FIELD_1_INDEX] = tokens[FIELD_1_INDEX].replace("\t", "");
-                    }
-                }
-                inputFileAsList.addAll(Arrays.asList(tokens));
-            }
-            fileReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        inputFileAsTwoDimArr = new String[(int) rowCount - 1][tokens.length];
-        int k = 0;
-        try {
-            for (int i = 0; i < rowCount - 1; i++) {
-                for (int j = 0; j < tokens.length; j++) {
-                    inputFileAsTwoDimArr[i][j] = inputFileAsList.get(k++);
-                }
-            }
-        } catch (IndexOutOfBoundsException ex) {
-            System.out.println("Mismatch between lastRowIndex and/or lastColIndex params, and the no of input file records and/or columns");
-        }
-        return inputFileAsTwoDimArr;
     }
 
     @Override
@@ -76,13 +38,60 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     }
 
     @Override
+    public String[][] readCleanseDataSourceFileInto2DArray(String fileName, boolean cleanseSwitch) {
+        BufferedReader fileReader = null;
+        String line = "";
+        long rowCount = 0;
+        int colCount = 0;
+        String[] tokens = new String[0];
+        try {
+            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
+            rowCount = fileReader.lines().count();
+            // re-initialise
+            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
+            while ((line = fileReader.readLine()) != null) {
+                tokens = line.split(",");
+                colCount = tokens.length;
+                if (tokens.length > 0) {
+                    // Cleansing happens here
+                    if(cleanseSwitch) {
+                        int FIELD_1_INDEX = 2;
+                        if (tokens[FIELD_1_INDEX].contains("2021")) {
+                            tokens[FIELD_1_INDEX] = tokens[FIELD_1_INDEX].replace("2021", "");
+                        }
+                    }
+                }
+                inputFileAsList.addAll(Arrays.asList(tokens));
+            }
+            fileReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Map List to 2D Array based on the colSize
+        inputFileAsTwoDimArr = new String[(int) rowCount][tokens.length];
+        int k = 0;
+        for (int r = 0; r < rowCount; r++) {
+            if (r % 2 == 0) {
+                for (int c = 0; c < colCount; c++) {
+                    inputFileAsTwoDimArr[r][c] = inputFileAsList.get(k++);
+                }
+            } else {
+                for (int c = 0; c < colCount; c++) {
+                    inputFileAsTwoDimArr[r][c] = inputFileAsList.get(k++);
+                }
+            }
+        }
+        return inputFileAsTwoDimArr;
+    }
+
+    @Override
     public boolean copyFeatureFile(String fileName) {
         InputStream inStream = null;
         OutputStream outStream = null;
         try {
             File fromFile = new File(USER_DIR + getPartialOutputFilePath() + fileName);
             File toFile = new File(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
-            setFileName(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName);
+            setFileName(USER_DIR + getPartialOutputFilePath() + "data_vol_" + fileName.toLowerCase());
             inStream = new FileInputStream(fromFile);
             outStream = new FileOutputStream(toFile);
             byte[] buffer = new byte[1024];
@@ -114,7 +123,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         try {
             fw = new FileWriter(getFileName(), true);
             BufferedWriter bw = new BufferedWriter(fw);
-            String firstRow = "|" + getInputFileAsList().get(0).replaceAll(",", "|") + "|" + LINE_SEPARATOR;
+            String firstRow = getSpecificRowFromInputFile2DArray(0).replaceAll(",", "|") + "|" + LINE_SEPARATOR;
             String rowset = "";
             int columnSize = 0;
             if (range.length == 2) {
@@ -126,13 +135,16 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                         bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
                     }
                     break;
-                case "rowsrange":
+                case "rowrange":
                     if (range.length == 2) {
                         if (!(range[0] == 0)) {
                             bw.write(firstRow);
                         }
-                        for (String str : getRowRangeFromInputFileArrayList(range[0], range[1])) {
-                            bw.write("|" + str.replace(",", "|") + "|" + LINE_SEPARATOR);
+                        for (String[] eachRow : getRowRangeFromInputFile2DArray(range[0], range[1])) {
+                            for (String str : eachRow) {
+                                bw.write("|" + str.replace(",", "|"));
+                            }
+                            bw.write(LINE_SEPARATOR);
                         }
                     } else if (range.length > 2) {
                         throw new RuntimeException("A range cannot have more than two values");
@@ -140,32 +152,34 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                     break;
                 case "row":
                     bw.write(firstRow);
-                    rowset = getSpecificRowFromInputFileArrayList(range[0]);
-                    bw.write("|" + rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    rowset = getSpecificRowFromInputFile2DArray(range[0]);
+                    bw.write(rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
                     break;
-                case "colsrange":
+                case "colrange":
                     if (range.length > 2) {
                         throw new RuntimeException("A range cannot have more than two values");
                     }
-                    //TODO LINE BREAK BASED ON COLSIZE
                     else if (range.length == 2 && ((range[0] == 0) || range[0] == 1)) {
-                        inputFileSubsetAsList = getColumnRangeFromInputFile2DArray(range[0], range[1]);
-                        //inputFileSubsetAsTwoDimArr = getColumnRangeSubsetFromInputFile2DArray(range[0], range[1]);
-
-                    }
-                    else {
+                        for (String[] eachRow : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
+                            for (String str : eachRow) {
+                                bw.write("|" + str.replace(",", "|"));
+                            }
+                            bw.write(LINE_SEPARATOR);
+                        }
+                    } else {
                         bw.write(firstRow);
-                        for (String str : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
-                            bw.write("|" + str.replace("[","|")
-                                    .replace("]","")
-                                    .replace(",", "|") + "|" + LINE_SEPARATOR);
+                        for (String[] eachRow : getColumnRangeFromInputFile2DArray(range[0], range[1])) {
+                            for (String str : eachRow) {
+                                bw.write("|" + str.replace(",", "|"));
+                            }
+                            bw.write(LINE_SEPARATOR);
                         }
                     }
                     break;
                 case "column":
                     for (String str : getSpecificColumnFromInputFile2DArray(range[0])) {
-                        bw.write("|" + str.replace("[","|")
-                                .replace("]","")
+                        bw.write("|" + str.replace("[", "|")
+                                .replace("]", "")
                                 .replace(",", "|") + "|" + LINE_SEPARATOR);
                     }
                     break;
@@ -197,6 +211,77 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return inputFileSubsetAsList;
     }
 
+    public List<String> getSpecificColumnFromInputFile2DArray(int colIndex) {
+        return Arrays.stream(inputFileAsTwoDimArr)
+                .map(object -> object[colIndex])
+                .collect(toList());
+    }
+
+    //TODO review this method
+    public List<String> getColRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
+        int startRange = rangeStart;
+        if (rangeStart <= 0) {
+            startRange = 1;
+        }
+        // Mapping of the two-dim array with indices
+        inputFileSubsetAsList.clear();
+        int finalRangeStart = startRange;
+        range(0, inputFileAsTwoDimArr.length)
+                .flatMap(row -> range(finalRangeStart, rangeEnd)
+                        .map(col -> {
+                            inputFileSubsetAsList.add(inputFileAsTwoDimArr[row][col]);
+                            return row;
+                        }))
+                .forEach(row -> {
+                });
+        return inputFileSubsetAsList;
+    }
+
+    public String[][] getColumnRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
+        int colCount = (rangeEnd - rangeStart) + 1;
+        try {
+            inputFileSubsetAsTwoDimArr = new String[inputFileAsTwoDimArr.length][colCount];
+            for(int r = 0; r < inputFileSubsetAsTwoDimArr.length; r++) {
+                for(int c = 0; c < colCount; c++) {
+                    inputFileSubsetAsTwoDimArr[r][c] = inputFileAsTwoDimArr[r][rangeStart + c];
+                }
+            }
+            return inputFileSubsetAsTwoDimArr;
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            return  null;
+        }
+    }
+
+    public String getSpecificRowFromInputFile2DArray(int rowIndex) {
+        try {
+            String rowset = "";
+            for(int i = 0; i < inputFileAsTwoDimArr[0].length; i++) {
+                rowset += "|" + inputFileAsTwoDimArr[rowIndex][i];
+            }
+            return rowset;
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String[][] getRowRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
+        int rowCount = (rangeEnd - rangeStart) + 1;
+        try {
+            inputFileSubsetAsTwoDimArr = new String[rowCount][inputFileAsTwoDimArr[0].length];
+            for(int r = 0; r < rowCount; r++) {
+                for(int c = 0; c < inputFileAsTwoDimArr[0].length; c++) {
+                    inputFileSubsetAsTwoDimArr[r][c] = inputFileAsTwoDimArr[rangeStart + r][c];
+                }
+            }
+            return inputFileSubsetAsTwoDimArr;
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            return  null;
+        }
+    }
+
     public List<ResultSelection> filterRowsByList(String[][] array, Predicate<String> predicate, int column) {
         return range(0, array.length)
                 .filter(i -> predicate.test(array[i][column]))
@@ -214,53 +299,8 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
         return result;
     }
 
-    public List<String> getSpecificColumnFromInputFile2DArray(int colIndex) {
-        return Arrays.stream(inputFileAsTwoDimArr)
-                .map(object -> object[colIndex])
-                .collect(toList());
-    }
 
-    public List<String> getColumnRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
-        int startRange = rangeStart;
-        if(rangeStart <= 0) {
-            startRange = 1;
-        }
-        // Mapping of the two-dim array with indices
-        inputFileSubsetAsList.clear();
-        int finalRangeStart = startRange;
-        range(0, inputFileAsTwoDimArr.length)
-                .flatMap(row -> range(finalRangeStart, rangeEnd)
-                        .map(col -> {
-                            inputFileSubsetAsList.add(inputFileAsTwoDimArr[row][col]);
-                            return row;
-                        }))
-                .forEach(row -> {});
-        return inputFileSubsetAsList;
-    }
 
-    //TODO INCOMPLETE
-    private String[][] getColumnRangeSubsetFromInputFile2DArray(int rangeStart, int rangeEnd) {
-        int rowSize = inputFileAsList.size() - 1;
-        int colRangeSize = rangeEnd - rangeStart;
-        inputFileSubsetAsTwoDimArr = new String[inputFileAsList.size() - 1][colRangeSize];
-        int k = 0;
-        try {
-            //Reminder - there are 32 elements in the list k=32
-            for (int i = 0; i < rowSize; i++) {
-                System.out.println("");
-                for (int j = 0; j < colRangeSize; j++) {
-                    //inputFileAsTwoDimArr[i][j] = inputFileAsList.get(k++);
-                    inputFileAsList.get(k++);
-                    if(k >= rangeStart && k <= rangeEnd) {
-                        System.out.print(inputFileAsList.get(k));
-                    }
-                }
-            }
-        } catch (IndexOutOfBoundsException ex) {
-            System.out.println("Mismatch between lastRowIndex and/or lastColIndex params, and the no of input file records and/or columns");
-        }
-        return inputFileAsTwoDimArr;
-    }
 
     public String getFileName() {
         return this.fileName;
@@ -284,12 +324,28 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
     }
 
     public String getPartialOutputFilePath() {
-        String PARTIAL_OUTPUT_FILE_PATH = "\\src\\test\\resources\\features\\";
+        String PARTIAL_OUTPUT_FILE_PATH = "\\src\\test\\resources\\features\\" + getExcelTab() + "\\";
         if (System.getProperty("os.name").contains("Windows")) {
             return PARTIAL_OUTPUT_FILE_PATH;
         } else {
             return PARTIAL_OUTPUT_FILE_PATH.replaceAll("\\\\", "/");
         }
+    }
+
+    public String getExcelTab() {
+        return excelTab;
+    }
+
+    public void setExcelTab(String excelTab) {
+        this.excelTab = excelTab;
+    }
+
+    public boolean isCleanseSwitch() {
+        return cleanseSwitch;
+    }
+
+    public void setCleanseSwitch(boolean cleanseSwitch) {
+        this.cleanseSwitch = cleanseSwitch;
     }
 
 }

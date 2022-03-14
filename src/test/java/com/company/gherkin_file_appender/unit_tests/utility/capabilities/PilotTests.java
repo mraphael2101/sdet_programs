@@ -26,14 +26,14 @@ public class PilotTests extends TestBase {
     public void appendRowRangeToFeatureFile_StartFromIndexZero() {
         int[] range = { 0, 3 };
         assertTrue(utility2.copyFeatureFile("demo.feature"));
-        assertTrue(utility2.appendDataToNewFeatureFile("rowsrange", range));
+        assertTrue(utility2.appendDataToNewFeatureFile("rowrange", range));
     }
 
     @Test
     public void appendRowRangeToFeatureFile_StartFromIndexOne() {
         int[] range = { 1, 4 };
         assertTrue(utility2.copyFeatureFile("demo.feature"));
-        assertTrue(utility2.appendDataToNewFeatureFile("rowsrange", range));
+        assertTrue(utility2.appendDataToNewFeatureFile("rowrange", range));
     }
 
     @Test

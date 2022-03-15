@@ -217,7 +217,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
                 .collect(toList());
     }
 
-    //TODO review this method
+    //TODO Review this method
     public List<String> getColRangeFromInputFile2DArray(int rangeStart, int rangeEnd) {
         int startRange = rangeStart;
         if (rangeStart <= 0) {
@@ -243,7 +243,7 @@ public class Prototype_AppendDataToFeatureFileUtility implements FeatureFile_Dat
             inputFileSubsetAsTwoDimArr = new String[inputFileAsTwoDimArr.length][colCount];
             for(int r = 0; r < inputFileSubsetAsTwoDimArr.length; r++) {
                 for(int c = 0; c < colCount; c++) {
-                    inputFileSubsetAsTwoDimArr[r][c] = inputFileAsTwoDimArr[r][rangeStart + c];
+                    inputFileSubsetAsTwoDimArr[r][c] = inputFileAsTwoDimArr[r][rangeStart + c].stripLeading();
                 }
             }
             return inputFileSubsetAsTwoDimArr;

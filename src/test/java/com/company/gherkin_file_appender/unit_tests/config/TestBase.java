@@ -22,7 +22,12 @@ public class TestBase {
         String[][] sampleData = new String[rowSize][colSize];
         int rowTemp = 1;
         int colTemp = 1;
-        for(int r = 0; r < rowSize; r++) {
+
+        for(int c = 0; c < colSize; c++) {
+            sampleData[0][c] = String.format("Column %d", c + colTemp);
+        }
+
+        for(int r = 1; r < rowSize; r++) {
             for(int c = 0; c < colSize; c++) {
                 sampleData[r][c] = String.format("Row %d Col %d", rowTemp,  colTemp++);
             }

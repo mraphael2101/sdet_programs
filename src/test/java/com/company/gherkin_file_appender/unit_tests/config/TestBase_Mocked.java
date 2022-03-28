@@ -1,6 +1,6 @@
 package com.company.gherkin_file_appender.unit_tests.config;
 
-import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
+import com.company.gherkin_file_appender.config.AppendDataToFeatureFile_Utility;
 import com.company.gherkin_file_appender.unit_tests.config.pojo.sample_data_tab.SampleData;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TestBase_Mocked {
-    protected Prototype_AppendDataToFeatureFileUtility utility2;
-    protected List<String> rows;
+    protected AppendDataToFeatureFile_Utility utility2;
+    protected String[][] rows;
 
     @InjectMocks
-    protected Prototype_AppendDataToFeatureFileUtility utility;
+    protected AppendDataToFeatureFile_Utility utility;
 
     @Mock
     protected SampleData sampleData;
@@ -24,12 +24,13 @@ public class TestBase_Mocked {
     @BeforeClass
     public void beforeTestSuite() {
         MockitoAnnotations.openMocks(this);
+
     }
 
     @Before
     public void beforeTest() {
-        utility2 = new Prototype_AppendDataToFeatureFileUtility();
-        rows = utility2.readDataSourceFileIntoList("Sample_Data.csv");
+        utility2 = new AppendDataToFeatureFile_Utility();
+        rows = utility2.readCleanseDataSourceFileInto2DArray("Sample_Data.csv", false);
 
         //String[][] expected2DArr = new SampleData().getSampleData();
     }
@@ -47,3 +48,4 @@ public class TestBase_Mocked {
         System.out.println(fileInputRowsList);
     }
 }
+

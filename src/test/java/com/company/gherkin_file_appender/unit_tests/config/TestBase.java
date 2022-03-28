@@ -1,6 +1,6 @@
 package com.company.gherkin_file_appender.unit_tests.config;
 
-import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
+import com.company.gherkin_file_appender.config.AppendDataToFeatureFile_Utility;
 import org.junit.Before;
 
 import java.util.Arrays;
@@ -8,15 +8,14 @@ import java.util.List;
 
 public class TestBase {
 
-    protected Prototype_AppendDataToFeatureFileUtility utility2;
-    protected List<String> rows;
-    protected String[][] sampleData;
+    protected AppendDataToFeatureFile_Utility caps_utility;
+    protected String[][] rows;
 
     @Before
     public void beforeTest() {
-        utility2 = new Prototype_AppendDataToFeatureFileUtility();
-        rows = utility2.readDataSourceFileIntoList("Sample_Data.csv");
-    }
+        caps_utility = new AppendDataToFeatureFile_Utility();
+        caps_utility.setExcelTab("Sample_Data_Tab");
+        rows = caps_utility.readCleanseDataSourceFileInto2DArray("Sample_Data.csv", false); }
 
     protected String[][] initExpected2DArr(int rowSize, int colSize) {
         String[][] sampleData = new String[rowSize][colSize];
@@ -40,14 +39,17 @@ public class TestBase {
 
     protected void print(String value) {
         System.out.println(value);
+        System.out.println("");
     }
 
     protected void print(String[][] inputFileAsTwoDimArr) {
         System.out.println(Arrays.deepToString(inputFileAsTwoDimArr));
+        System.out.println("");
     }
 
     protected void print(List<String> fileInputRowsList) {
         System.out.println(fileInputRowsList);
+        System.out.println("");
     }
 
 }

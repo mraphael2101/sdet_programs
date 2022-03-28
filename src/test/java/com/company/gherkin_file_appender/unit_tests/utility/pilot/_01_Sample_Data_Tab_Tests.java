@@ -1,16 +1,16 @@
 package com.company.gherkin_file_appender.unit_tests.utility.pilot;
 
-import com.company.gherkin_file_appender.config.Prototype_AppendDataToFeatureFileUtility;
+import com.company.gherkin_file_appender.config.AppendDataToFeatureFile_Utility;
 import com.company.gherkin_file_appender.unit_tests.config.TestBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
 public class _01_Sample_Data_Tab_Tests extends TestBase {
-    private Prototype_AppendDataToFeatureFileUtility utility;
+    private AppendDataToFeatureFile_Utility utility;
 
     public _01_Sample_Data_Tab_Tests() {
-        utility = new Prototype_AppendDataToFeatureFileUtility();
+        utility = new AppendDataToFeatureFile_Utility();
     }
 
     @Test

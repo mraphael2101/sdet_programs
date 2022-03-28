@@ -1,5 +1,6 @@
 package com.company.gherkin_file_appender.config;
 
+
 import java.util.Arrays;
 
 public class ResultSelection {
@@ -11,9 +12,19 @@ public class ResultSelection {
         this.row = row;
     }
 
+
     // Only executed when the class is instantiated
     @Override
     public String toString() {
-        return String.format("%d: %s", rowIndex, Arrays.toString(row));
+        return Arrays.toString(row);
     }
+
+
+    /***
+     @Override
+     public String toString() {
+     return String.format("%d: %s", rowIndex, Arrays.toString(row));
+     }
+     ***/
+
 }

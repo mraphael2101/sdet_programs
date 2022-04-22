@@ -1,6 +1,7 @@
 package com.company.gherkin_file_appender.config;
 
 import com.company.gherkin_file_appender.interfaces.FeatureFile_DataAppender;
+import com.google.common.collect.Iterables;
 
 import java.io.*;
 import java.util.*;
@@ -80,6 +81,117 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
         return inputFileAsTwoDimArr;
     }
 
+    public String[][] readCleanseDataSourceFileInto2DArray_AllSimPlans(String fileName, boolean cleanseSwitch) {
+        BufferedReader fileReader = null;
+        String line = "";
+        long rowCount = 0;
+        int colCount = 0;
+        int firstRowColCount = 0;
+        String[] tokens = new String[0];
+        try {
+            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
+            rowCount = fileReader.lines().count();
+            // re-initialise
+            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
+            int counter = 0;
+            while ((line = fileReader.readLine()) != null) {
+                // IMPORTANT split by default removes trailing empty strings from a result array. To turn this mechanism off we need to use overloaded version
+                tokens = line.split(",", -1);
+                if (counter == 0) {
+                    firstRowColCount = tokens.length;
+                }
+                colCount = tokens.length; // for every row
+                if (tokens.length > firstRowColCount || tokens.length < firstRowColCount) {
+                    throw new RuntimeException("Row index " + counter + " has " + colCount + " columns, and it should have " + firstRowColCount);
+                }
+                if (tokens.length > 0) {
+                    // Cleansing happens here
+                    if (cleanseSwitch) {
+                        int FIELD_1_INDEX = 2;
+                        if (tokens[FIELD_1_INDEX].contains("2021")) {
+                            tokens[FIELD_1_INDEX] = tokens[FIELD_1_INDEX].replace("2021", "");
+                        }
+                    }
+                }
+                inputFileAsList.addAll(Arrays.asList(tokens));
+                counter++;
+            }
+            fileReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Map List to 2D Array based on the colSize
+        inputFileAsTwoDimArr = new String[(int) rowCount][tokens.length];
+        int k = 0;
+        for (int r = 0; r < rowCount; r++) {
+            if (r % 2 == 0) {
+                for (int c = 0; c < colCount; c++) {
+                    inputFileAsTwoDimArr[r][c] = inputFileAsList.get(k++);
+                }
+            } else {
+                for (int c = 0; c < colCount; c++) {
+                    inputFileAsTwoDimArr[r][c] = inputFileAsList.get(k++);
+                }
+            }
+        }
+        return inputFileAsTwoDimArr;
+    }
+
+    public String[][] readCleanseDataSourceFileInto2DArray_DevicePricing(String fileName, boolean cleanseSwitch) {
+        BufferedReader fileReader = null;
+        String line = "";
+        long rowCount = 0;
+        int colCount = 0;
+        int firstRowColCount = 0;
+        String[] tokens = new String[0];
+        try {
+            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
+            rowCount = fileReader.lines().count();
+            // re-initialise
+            fileReader = new BufferedReader(new FileReader(USER_DIR + getPartialInputFilePath() + fileName));
+            int counter = 0;
+            while ((line = fileReader.readLine()) != null) {
+                // IMPORTANT split by default removes trailing empty strings from a result array. To turn this mechanism off we need to use overloaded version
+                tokens = line.split(",", -1);
+                if(counter == 0) {
+                    firstRowColCount = tokens.length;
+                }
+                colCount = tokens.length; // for every row
+                if(tokens.length > firstRowColCount  || tokens.length < firstRowColCount ) {
+                    throw new RuntimeException("Row index " + counter + " has " + colCount + " columns, and it should have " + firstRowColCount);
+                }
+                if (tokens.length > 0) {
+                    // Cleansing happens here
+                    if(cleanseSwitch) {
+                        if (tokens[1].endsWith(" ")) {
+                            tokens[1] = tokens[1].strip();
+                        }
+                    }
+                }
+                inputFileAsList.addAll(Arrays.asList(tokens));
+                counter++;
+            }
+            fileReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Map List to 2D Array based on the colSize
+        inputFileAsTwoDimArr = new String[(int) rowCount][tokens.length];
+        int k = 0;
+        for (int r = 0; r < rowCount; r++) {
+            if (r % 2 == 0) {
+                for (int c = 0; c < colCount; c++) {
+                    inputFileAsTwoDimArr[r][c] = inputFileAsList.get(k++);
+                }
+            } else {
+                for (int c = 0; c < colCount; c++) {
+                    inputFileAsTwoDimArr[r][c] = inputFileAsList.get(k++);
+                }
+            }
+        }
+        return inputFileAsTwoDimArr;
+    }
+
     @Override
     public boolean copyFeatureFile(String fileName) {
         InputStream inStream = null;
@@ -115,12 +227,21 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
     }
 
     @Override
-    public boolean appendDataToNewFeatureFile(String mode, Object... args) {
+    public boolean appendDataToNewFeatureFile(String scenarioType, String mode, Object... args) {
         FileWriter fw = null;
         try {
+            boolean outlineFlag = true;
+            switch (scenarioType.toLowerCase()) {
+                case "scenario":
+                    outlineFlag = false;
+                    break;
+                default:
+                    break;
+            }
+
             fw = new FileWriter(getFileName(), true);
             BufferedWriter bw = new BufferedWriter(fw);
-            String firstRow = getSpecificRowFromInputFile2DArray(0).replaceAll(",", "|") + "|" + LINE_SEPARATOR;
+            String firstRow = getSpecificRowFromInputFile2DArray(0).toLowerCase().replaceAll(",", "|") + LINE_SEPARATOR;
             String rowset = "";
             int rowIndex = 0;
             int columnSize = 0;
@@ -128,7 +249,6 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
             int queryColIndex = 0;
             int resultColStartIndex = 0;
             int resultColEndIndex = 0;
-
             if (args.length == 0) {
             }
             else if (args.length == 1) {
@@ -157,78 +277,165 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
 
             switch (mode.toLowerCase()) {
                 case "alldata":
-                    for (String[] eachRow : getRowRangeFromInputFile2DArray(0, inputFileAsTwoDimArr.length - 1)) {
-                        for (String str : eachRow) {
-                            bw.write("|" + str.replace(",", "|"));
+                    if(outlineFlag) {
+                        for (String[] eachRow : getRowRangeFromInputFile2DArray(0, inputFileAsTwoDimArr.length - 1)) {
+                            for (String str : eachRow) {
+                                bw.write("|" + str.replace(",", "|"));
+                            }
+                            bw.write("|");
+                            bw.write(LINE_SEPARATOR);
                         }
-                        bw.write("|");
-                        bw.write(LINE_SEPARATOR);
+                    }
+                    else {
+                        for (String[] eachRow : getRowRangeFromInputFile2DArray(1, inputFileAsTwoDimArr.length - 1)) {
+                            for (String str : eachRow) {
+                                bw.write("|" + str.replace(",", "|"));
+                            }
+                            bw.write("|");
+                            bw.write(LINE_SEPARATOR);
+                        }
                     }
                     break;
                 case "rowrange":
-                    if (args.length == 2) {
-                        if (!((int) args[0] == 0)) {
+                    if (args.length > 2) {
+                        throw new RuntimeException("A row range cannot have more than two values");
+                    }
+                    if ((int) args[0] > (int) args[1]) {
+                        throw new RuntimeException("The first row range index cannot be greater than the second one");
+                    }
+                    if ((int) args[0] == (int) args[1]) {
+                        throw new RuntimeException("The row range indexes should be different");
+                    }
+                    if(outlineFlag) {
+                        int index = 0;
+                        if((int) args[0] == 0) {
+                            for (String[] eachRow : getRowRangeFromInputFile2DArray((int) args[0], (int) args[1])) {
+                                for (String str : eachRow) {
+                                    index++;
+                                    bw.write("|" + str.replace(",", "|"));
+                                }
+                                if(index != 0) {
+                                    bw.write("|");
+                                }
+                                bw.write(LINE_SEPARATOR);
+                            }
+                        }
+                        else {
                             bw.write(firstRow);
+                            for (String[] eachRow : getRowRangeFromInputFile2DArray((int) args[0], (int) args[1])) {
+                                for (String str : eachRow) {
+                                    bw.write("|" + str.replace(",", "|"));
+                                }
+                                bw.write("|");
+                                bw.write(LINE_SEPARATOR);
+                            }
+                        }
+                    }
+                    if(!outlineFlag) {
+                        if((int) args[0] == 0) {
+                            throw new RuntimeException("The first row range index cannot be zero if providing the value scenario for the scenario type attribute.");
                         }
                         for (String[] eachRow : getRowRangeFromInputFile2DArray((int) args[0], (int) args[1])) {
                             for (String str : eachRow) {
                                 bw.write("|" + str.replace(",", "|"));
                             }
+                            bw.write("|");
                             bw.write(LINE_SEPARATOR);
                         }
-                    } else if (args.length > 2) {
-                        throw new RuntimeException("A range cannot have more than two values");
                     }
                     break;
                 case "row":
-                    bw.write(firstRow);
-                    rowset = getSpecificRowFromInputFile2DArray(rowIndex);
-                    bw.write(rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    if (args.length == 2) {
+                        throw new RuntimeException("A row index cannot have more than one value");
+                    }
+                    if(rowIndex == 0) {
+                        throw new RuntimeException("Providing the value 0 for the row index will result in only the header row being displayed. Please provide a different index.");
+                    }
+                    if(outlineFlag) {
+                        bw.write(firstRow);
+                        rowset = getSpecificRowFromInputFile2DArray(rowIndex);
+                        bw.write(rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    }
+                    if(!outlineFlag) {
+                        rowset = getSpecificRowFromInputFile2DArray(rowIndex);
+                        bw.write(rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                    }
                     break;
                 case "colrange":
                     if (args.length > 2) {
                         throw new RuntimeException("A range cannot have more than two values");
                     }
-                    else if (args.length == 2 && (((int) args[0] == 0) || (int) args[0] == 1)) {
+                    if(outlineFlag) {
                         for (String[] eachRow : getColumnRangeFromInputFile2DArray((int) args[0], (int) args[1])) {
                             for (String str : eachRow) {
                                 bw.write("|" + str.replace(",", "|"));
                             }
+                            bw.write("|" );
                             bw.write(LINE_SEPARATOR);
                         }
                     }
                     else {
-                        bw.write(firstRow);
+                        int i = 0;
                         for (String[] eachRow : getColumnRangeFromInputFile2DArray((int) args[0], (int) args[1])) {
+                            if(i == 0) {
+                                i++;
+                                continue;
+                            }
                             for (String str : eachRow) {
                                 bw.write("|" + str.replace(",", "|"));
                             }
+                            bw.write("|" );
                             bw.write(LINE_SEPARATOR);
                         }
                     }
                     break;
                 case "column":
-                    for (String str : getSpecificColumnFromInputFile2DArray((int) args[0])) {
-                        bw.write("|" + str.replace("[", "|")
-                                .replace("]", "")
-                                .replace(",", "|") + "|" + LINE_SEPARATOR);
+                    if(outlineFlag) {
+                        for (String str : getSpecificColumnFromInputFile2DArray((int) args[0])) {
+                            bw.write("|" + str.replace("[", "|")
+                                    .replace("]", "")
+                                    .replace(",", "|") + "|" + LINE_SEPARATOR);
+                        }
+                    }
+                    else {
+                        for (String str : Iterables.skip(getSpecificColumnFromInputFile2DArray((int) args[0]), 1)) {
+                            bw.write("|" + str.replace("[", "|")
+                                    .replace("]", "")
+                                    .replace(",", "|") + "|" + LINE_SEPARATOR);
+                        }
                     }
                     break;
                 case "filtered_list":
-                    for (ResultSelection custObj : filterRowsByList(inputFileAsTwoDimArr, predicate, queryColIndex)) {
-                        bw.write("|" + custObj.toString()
-                                .replace("[", "")
-                                .replace("]", "")
-                                .replace(",", "|")
-                                + "|" + LINE_SEPARATOR);
+                    if(outlineFlag) {
+                        bw.write(getSpecificRowFromInputFile2DArray(0).toLowerCase().replaceAll(" ", "_"));
+                        bw.newLine();
+                        for (ResultSelection custObj : filterRowsByList(inputFileAsTwoDimArr, predicate, queryColIndex)) {
+                            bw.write("|" + custObj.toString()
+                                    .replace("[", "")
+                                    .replace("]", "")
+                                    .replace(",", "|")
+                                    + "|" + LINE_SEPARATOR);
+                        }
+                    }
+                    else {
+                        int i = 0;
+                        for (ResultSelection custObj : filterRowsByList(inputFileAsTwoDimArr, predicate, queryColIndex)) {
+                            bw.write("|" + custObj.toString()
+                                    .replace("[", "")
+                                    .replace("]", "")
+                                    .replace(",", "|")
+                                    + "|" + LINE_SEPARATOR);
+                        }
                     }
                     break;
                 case "filtered_map_by_col":
                     Map<Integer, String[]> map = filterRowsByMap(inputFileAsTwoDimArr, predicate, queryColIndex);
                     int finalResultColStartIndex = resultColStartIndex;
-                    bw.write(getSpecificColumnFromInputFile2DArray(0).get(finalResultColStartIndex).replaceAll("", "_"));
-                    bw.write("|");
-                    bw.newLine();
+                    if(outlineFlag) {
+                        bw.write(getSpecificColumnFromInputFile2DArray(0).get(finalResultColStartIndex).toLowerCase().replaceAll("", "_"));
+                        bw.write("|");
+                        bw.newLine();
+                    }
                     map.forEach((k, v) -> {
                         try {
                             bw.write("|" + v[finalResultColStartIndex]
@@ -245,8 +452,10 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
                     Map<Integer, String[]> treeMap = filterRowsByMap(inputFileAsTwoDimArr, predicate, queryColIndex);
                     int finalResultColStartIndex1 = resultColStartIndex;
                     int finalResultColEndIndex = resultColEndIndex;
-                    bw.write(getColumnRangeForFirstRowFromInputFile2DArray(resultColStartIndex, resultColEndIndex).replaceAll(" ", "_"));
-                    bw.newLine();
+                    if(outlineFlag) {
+                        bw.write(getColumnRangeForFirstRowFromInputFile2DArray(resultColStartIndex, resultColEndIndex).toLowerCase().replaceAll(" ", "_"));
+                        bw.newLine();
+                    }
                     treeMap.forEach((k, v) -> {
                         try {
                             if(args[3] != null && args[3] instanceof Integer) {

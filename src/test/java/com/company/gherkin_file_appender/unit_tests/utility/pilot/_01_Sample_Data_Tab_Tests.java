@@ -11,43 +11,37 @@ public class _01_Sample_Data_Tab_Tests extends TestBase {
 
     public _01_Sample_Data_Tab_Tests() {
         utility = new AppendDataToFeatureFile_Utility();
+        utility.setExcelTab("Sample_Data_Tab");
+        utility.readCleanseDataSourceFileInto2DArray("Sample_Data.csv", true);
     }
 
     @Test
     public void happyPath_RetrieveColumn_WithCleansing() {
-        utility.setExcelTab("Sample_Data_Tab");
-        utility.readCleanseDataSourceFileInto2DArray("Sample_Data.csv", true);
-        int[] range = { 0 };
+        Object[] range = { 0 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
-        assertTrue(utility.appendDataToNewFeatureFile("column", range));
+        assertTrue(utility.appendDataToNewFeatureFile("outline","column", range));
     }
 
     @Test
     public void happyPath_RetrieveColumnRange_WithCleansing() {
-        utility.setExcelTab("Sample_Data_Tab");
-        utility.readCleanseDataSourceFileInto2DArray("Sample_Data.csv", true);
-        int[] range = { 1, 12 };
+        Object[] range = { 1, 12 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
-        assertTrue(utility.appendDataToNewFeatureFile("colrange", range));
+        assertTrue(utility.appendDataToNewFeatureFile("outline","colrange", range));
     }
 
     @Test
     public void happyPath_RetrieveRow_WithCleansing() {
-        utility.setExcelTab("Sample_Data_Tab");
-        utility.readCleanseDataSourceFileInto2DArray("Sample_Data.csv", true);
-        int[] range = { 2 };
+        Object[] range = { 2 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
-        assertTrue(utility.appendDataToNewFeatureFile("row", range));
+        assertTrue(utility.appendDataToNewFeatureFile("outline","row", range));
     }
 
     @Test
     public void happyPath_RetrieveRowRange_WithCleansing() {
-        utility.setExcelTab("Sample_Data_Tab");
         //utility.cleanseColumn("MarksColumn", "2021", "");
-
-        utility.readCleanseDataSourceFileInto2DArray("Sample_Data.csv", true);
-        int[] range = { 2, 7 };
+        Object[] range = { 2, 7 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
-        assertTrue(utility.appendDataToNewFeatureFile("rowrange", range));
+        assertTrue(utility.appendDataToNewFeatureFile("outline","rowrange", range));
     }
+
 }

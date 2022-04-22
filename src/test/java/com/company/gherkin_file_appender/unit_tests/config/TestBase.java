@@ -36,7 +36,6 @@ public class TestBase {
         return sampleData;
     }
 
-
     protected void print(String value) {
         System.out.println(value);
         System.out.println("");

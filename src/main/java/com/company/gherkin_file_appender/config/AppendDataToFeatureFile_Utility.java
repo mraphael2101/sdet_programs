@@ -2,6 +2,7 @@ package com.company.gherkin_file_appender.config;
 
 import com.company.gherkin_file_appender.interfaces.FeatureFile_DataAppender;
 import com.google.common.collect.Iterables;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
 import java.util.*;
@@ -241,7 +242,10 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
 
             fw = new FileWriter(getFileName(), true);
             BufferedWriter bw = new BufferedWriter(fw);
-            String firstRow = getSpecificRowFromInputFile2DArray(0).toLowerCase().replaceAll(",", "|") + LINE_SEPARATOR;
+            String firstRow = getSpecificRowFromInputFile2DArray(0)
+                    .toLowerCase()
+                    .replaceAll(" ", "_")
+                    .replaceAll(",", "|") + LINE_SEPARATOR;
             String rowset = "";
             int rowIndex = 0;
             int columnSize = 0;
@@ -354,11 +358,11 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
                     if(outlineFlag) {
                         bw.write(firstRow);
                         rowset = getSpecificRowFromInputFile2DArray(rowIndex);
-                        bw.write(rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                        bw.write(rowset.replace(",", "|") + LINE_SEPARATOR);
                     }
                     if(!outlineFlag) {
                         rowset = getSpecificRowFromInputFile2DArray(rowIndex);
-                        bw.write(rowset.replace(",", "|") + "|" + LINE_SEPARATOR);
+                        bw.write(rowset.replace(",", "|") + LINE_SEPARATOR);
                     }
                     break;
                 case "colrange":
@@ -407,7 +411,9 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
                     break;
                 case "filtered_list":
                     if(outlineFlag) {
-                        bw.write(getSpecificRowFromInputFile2DArray(0).toLowerCase().replaceAll(" ", "_"));
+                        bw.write(getSpecificRowFromInputFile2DArray(0)
+                                .toLowerCase()
+                                .replaceAll(" ", "_"));
                         bw.newLine();
                         for (ResultSelection custObj : filterRowsByList(inputFileAsTwoDimArr, predicate, queryColIndex)) {
                             bw.write("|" + custObj.toString()
@@ -432,7 +438,10 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
                     Map<Integer, String[]> map = filterRowsByMap(inputFileAsTwoDimArr, predicate, queryColIndex);
                     int finalResultColStartIndex = resultColStartIndex;
                     if(outlineFlag) {
-                        bw.write(getSpecificColumnFromInputFile2DArray(0).get(finalResultColStartIndex).toLowerCase().replaceAll("", "_"));
+                        bw.write("|");
+                        bw.write(getSpecificColumnFromInputFile2DArray(0).get(finalResultColStartIndex)
+                                .toLowerCase()
+                                .replaceAll(" ", "_"));
                         bw.write("|");
                         bw.newLine();
                     }
@@ -453,7 +462,9 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
                     int finalResultColStartIndex1 = resultColStartIndex;
                     int finalResultColEndIndex = resultColEndIndex;
                     if(outlineFlag) {
-                        bw.write(getColumnRangeForFirstRowFromInputFile2DArray(resultColStartIndex, resultColEndIndex).toLowerCase().replaceAll(" ", "_"));
+                        bw.write(getColumnRangeForFirstRowFromInputFile2DArray(resultColStartIndex, resultColEndIndex)
+                                .toLowerCase()
+                                .replaceAll(" ", "_"));
                         bw.newLine();
                     }
                     treeMap.forEach((k, v) -> {
@@ -464,7 +475,7 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
                                     int[] resultColRange = new int[colSize];
                                     for (int i = 0; i < resultColRange.length; i++) {
                                         resultColRange[i] = finalResultColStartIndex1 + i;
-                                        bw.write("|" +  v[resultColRange[i]]);
+                                        bw.write("|" +  v[resultColRange[i]].stripLeading());
                                     }
                                     bw.write("|");
                                     bw.newLine();
@@ -529,13 +540,14 @@ public class AppendDataToFeatureFile_Utility implements FeatureFile_DataAppender
         }
     }
 
-    public String getColumnRangeForFirstRowFromInputFile2DArray(int rangeStart, int rangeEnd) {
+    public String  getColumnRangeForFirstRowFromInputFile2DArray(int rangeStart, int rangeEnd) {
         int colCount = (rangeEnd - rangeStart) + 1;
         try {
-            String row = "|";
+            String row = "";
             for(int c = 0; c < colCount; c++) {
-                row += inputFileAsTwoDimArr[0][rangeStart + c] + "|";
+                row += "|" + inputFileAsTwoDimArr[0][rangeStart + c].stripLeading();
             }
+            row += "|";
             return row;
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();

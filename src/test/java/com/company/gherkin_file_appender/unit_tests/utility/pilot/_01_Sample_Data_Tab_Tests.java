@@ -4,6 +4,8 @@ import com.company.gherkin_file_appender.config.AppendDataToFeatureFile_Utility;
 import com.company.gherkin_file_appender.unit_tests.config.TestBase;
 import org.junit.Test;
 
+import java.util.function.Predicate;
+
 import static org.junit.Assert.assertTrue;
 
 public class _01_Sample_Data_Tab_Tests extends TestBase {
@@ -24,7 +26,7 @@ public class _01_Sample_Data_Tab_Tests extends TestBase {
 
     @Test
     public void happyPath_RetrieveColumnRange_WithCleansing() {
-        Object[] range = { 1, 12 };
+        Object[] range = { 1, 3 };
         assertTrue(utility.copyFeatureFile("demo.feature"));
         assertTrue(utility.appendDataToNewFeatureFile("outline","colrange", range));
     }
@@ -44,4 +46,31 @@ public class _01_Sample_Data_Tab_Tests extends TestBase {
         assertTrue(utility.appendDataToNewFeatureFile("outline","rowrange", range));
     }
 
+    @Test
+    public void filterResultsByMapUsingPredicate_FilteredList() {
+        String value = "Column 1";
+        Predicate<String> predStringEquals = s -> (s.equalsIgnoreCase(value));
+        Object[] args = {  predStringEquals, 0 };
+        assertTrue(utility.copyFeatureFile("demo.feature"));
+        assertTrue(utility.appendDataToNewFeatureFile("outline","filtered_list", args));
+    }
+
+    @Test
+    public void filterResultsByMapUsingPredicate_FilteredMapByCol() {
+        String value = "Column 1";
+        Predicate<String> predStringEquals = s -> (s.equalsIgnoreCase(value));
+        Object[] args = {  predStringEquals, 0, 1 };
+        assertTrue(utility.copyFeatureFile("demo.feature"));
+        assertTrue(utility.appendDataToNewFeatureFile("outline","filtered_map_by_col", args));
+    }
+
+    @Test
+    public void filterResultsByMapUsingPredicate_FilteredMapByColRange() {
+        String value = "Column 1";
+        Predicate<String> predStringEquals = s -> (s.equalsIgnoreCase(value));
+        Object[] args = {  predStringEquals, 0, 1, 2 };
+        assertTrue(utility.copyFeatureFile("demo.feature"));
+        assertTrue(utility.appendDataToNewFeatureFile("outline","filtered_map_by_colrange", args));
+
+    }
 }

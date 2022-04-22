@@ -1,6 +1,5 @@
 package com.company.gherkin_file_appender.config;
 
-
 import java.util.Arrays;
 
 public class ResultSelection {

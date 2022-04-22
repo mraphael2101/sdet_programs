@@ -12,5 +12,5 @@ Feature: Web Demo
 
     Examples:
 
-|_column_2|_column_3|
-| Column 2| Column 3|
+|column_1|column_2|column_3|column_4|
+|Column 1| Column 2| Column 3| Column 4|

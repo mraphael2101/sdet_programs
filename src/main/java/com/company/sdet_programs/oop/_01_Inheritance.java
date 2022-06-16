@@ -12,6 +12,7 @@ interface Plane {}
 
 
 // In Java, a class can ONLY inherit from one other class using the extends keyword
+// JavaScript has the same behaviour in relation to Interfaces and Classes
 class _02_Inheritence extends House implements Mansion, SemiDetached {}
 
 class House {}
